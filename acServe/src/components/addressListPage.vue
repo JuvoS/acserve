@@ -1,32 +1,36 @@
 <template>
-  <div class="address-list-panel">
-		<ul class="address-list">
-			<li class="list-item">
-				<div class="item-add" @click="addAddress()">
-					<i class="el-icon-plus"></i>
-				</div>
-			</li>
-			<li class="list-item" v-show="noAddresss">
-				<div class="item-add" style="font-size: 12px;color: #CCCCCC;">
-					暂无数据
-				</div>
-			</li>
-			<li class="list-item"  v-for="item in addressList">
-				<div class="list-item-row">
-					<div class="item-row-left">地址名称:{{ item.name }}</div>
-					<a class="item-row-right" @click="onChangeAddress(item.addressCode,'name',item.name)">修改名称</a>
-				</div>
-				<div class="list-item-row">
-					<div class="item-row-left">地址信息:{{ item.info }}</div>
-					<a class="item-row-right" @click="onChangeAddress(item.addressCode,'info',item.info)">修改地址</a>
-				</div>
-				<div class="list-item-row">
-					<div class="item-row-left">联系电话:{{ item.tel }}</div>
-					<a class="item-row-right" @click="onChangeAddress(item.addressCode,'tel',item.tel)">更换号码</a>
-				</div>
-			</li>
-		</ul>
-		
+  <div>
+  	<el-header style="margin-bottom: -10px;">
+	  	<a-Header class="header-panel"></a-Header>
+	  </el-header>
+		<div class="address-list-panel">
+				<ul class="address-list">
+							<li class="list-item">
+								<div class="item-add" @click="addAddress()">
+									<i class="el-icon-plus"></i>
+								</div>
+							</li>
+							<li class="list-item" v-show="noAddresss">
+								<div class="item-add" style="font-size: 12px;color: #CCCCCC;">
+									暂无数据
+								</div>
+							</li>
+							<li class="list-item"  v-for="item in addressList">
+								<div class="list-item-row">
+									<div class="item-row-left">地址名称:{{ item.name }}</div>
+									<a class="item-row-right" @click="onChangeAddress(item.addressCode,'name',item.name)">修改名称</a>
+								</div>
+								<div class="list-item-row">
+									<div class="item-row-left">地址信息:{{ item.info }}</div>
+									<a class="item-row-right" @click="onChangeAddress(item.addressCode,'info',item.info)">修改地址</a>
+								</div>
+								<div class="list-item-row">
+									<div class="item-row-left">联系电话:{{ item.tel }}</div>
+									<a class="item-row-right" @click="onChangeAddress(item.addressCode,'tel',item.tel)">更换号码</a>
+								</div>
+							</li>
+						</ul>
+		</div>
 		<div class="bgmask" v-show="bgmaskFlag"></div>
 		<el-row class="address-form-panel" v-show="addPanelFlag">
 			<el-col class="address-form-list">
@@ -86,6 +90,7 @@
 				</el-form>
 			</el-col>
 		</el-row>
+  
   </div>
 </template>
 
@@ -217,8 +222,12 @@ export default {
 </script>
 
 <style scoped>
+	.el-header{
+		padding: 0;
+	}
 	.address-list-panel {
 		width: 100%;
+		min-height: 100%;
 	}
 	.address-list-panel ul{
 		list-style: none;

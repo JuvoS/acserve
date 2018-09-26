@@ -2,10 +2,19 @@
   <div class="headerPage">
     <div>
     	<el-row :gutter="20">
-			  <el-col :span="3" :offset="16">
+    		<el-col :span="4">
+			  	<router-link to="/">
+			  	<div class="header-panel">
+			  		<i class="el-icon-menu"></i>
+			  	</div>
+			  	</router-link>
+			  </el-col>
+			  <el-col :span="3" :offset="12">
+			  	<router-link to="/addresslist">
 			  	<div class="header-panel">
 			  		<i class="el-icon-setting"></i>
 			  	</div>
+			  	</router-link>
 			  </el-col>
 			  <el-col :span="5">
 			  	<div class="header-panel">

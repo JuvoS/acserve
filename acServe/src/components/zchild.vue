@@ -1,0 +1,44 @@
+<template>
+  <div>
+  	<div>
+  		父传子-B：<span>{{inputName}}</span>
+  	</div>
+  	<div>
+    子传父-B:
+    <span>{{childValue}}</span>
+    <!-- 定义一个子组件传值的方法 -->
+    <input type="button" value="点击触发" @click="childClick">
+  </div>
+
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'address-list',
+  props: {
+      inputName: String,
+      required: true
+   },
+  data () {
+    return {
+			childValue: '我是子组件的数据'
+    }
+  },
+  methods: {
+  	childClick () {
+        // childByValue是在父组件on监听的方法
+        // 第二个参数this.childValue是需要传的值
+        this.$emit('childByValue', this.childValue)
+     }
+  },
+  mounted: function(){	
+  	
+  }
+  
+}
+</script>
+
+<style scoped>
+
+</style>

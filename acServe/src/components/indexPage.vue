@@ -6,15 +6,19 @@
 		  </el-header>
 	  	<el-main>
 		  	<div>
-		  		<el-button type="primary" round>发布需求</el-button>
+		  		<router-link to="/bill/create">
+		  			<el-button type="primary" round>发布需求</el-button>
+		  		</router-link>
 		  	</div>
 		  	<div class="menu-panel">
 		  		<h5 class="">需求订单</h5>
 		  		<hr>
 		  		<el-row :gutter="20">
 		  			<el-col :span="4" :offset="2">
+		  				<router-link to="/bill/list/all">
 		  				<el-button icon="el-icon-menu" circle></el-button>
 		  				<span>全部</span><span>(10)</span>
+		  				</router-link>
 		  			</el-col>
 		  			<el-col :span="4" :offset="1">
 		  				<el-button icon="el-icon-loading" circle></el-button>
