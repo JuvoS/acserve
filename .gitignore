@@ -1,0 +1,9 @@
+.DS_Store
+acServe/dist/
+acServe/node_modules/
+acServe/npm-debug.log
+acServe/service/dist/
+acServe/service/node_modules/
+acServe/service/public/upload/
+acServe/service/npm-debug.log
+.project
