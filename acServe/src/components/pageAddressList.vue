@@ -1,7 +1,7 @@
 <template>
   <div>
   	<el-header style="margin-bottom: -10px;">
-	  	<a-Header class="header-panel"></a-Header>
+	  	<ass-Header class="header-panel"></ass-Header>
 	  </el-header>
 		<div class="address-list-panel">
 				<ul class="address-list">
@@ -275,14 +275,14 @@ export default {
 	background: rgba(0,0,0,0.5);
 	width: 100%;
 	height: 100%;
-	position: absolute;
+	position: fixed;
 	z-index: 10;
 	top: 0;
 	left: 0;
 }
 .address-form-panel {
 	width: 100%;
-	position: absolute;
+	position: fixed;
 	top: 25%;
 	z-index: 11;
 }

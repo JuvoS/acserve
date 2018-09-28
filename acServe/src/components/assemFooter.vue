@@ -9,12 +9,16 @@ export default {
   name: 'footerPage',
   data () {
     return {
-      msg: 'Welcome to After for Customer Serve'
+      msg: 'Copy Right @2018'
     }
   }
 }
 </script>
 
 <style scoped>
-
+.footerPage {
+	font-size: 10px;
+	color: #aaa;
+	margin: 1rem auto;
+}
 </style>

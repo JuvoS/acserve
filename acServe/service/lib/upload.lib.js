@@ -4,6 +4,7 @@ var formidable = require('formidable');
 var fileLib = require('./file.lib');
 var dateLib = require('./date.lib');
 var codeGener = require('./codeGener.lib');
+var commonUtil = require('./util.lib');
 let uploadModel = {}
 
 uploadModel.upload = function (){
@@ -21,30 +22,36 @@ uploadModel.mulUpload = async function (req, res, callback){
 	    // form.maxFields = 1000;   //设置所有文件的大小总和
 	    //上传后处理
 	    form.parse(req, function(err, fields, files) {
-	    	// console.log(files);
-            var filesTemp = JSON.stringify(files, null, 2);
-	        if(err) res.json({status: 100,content: err});
-	  
-	        // var inputFile = files.mulfile[0];
-            var inputFile = files['file'][0];
-	        var fileFormat = inputFile.originalFilename.split(".");
-            var uploadedPath = inputFile.path;
-
-	        var codeGenNum = dateLib.getYear().toString()+month.toString()+codeGener.randomLenRadix(12,10);
-            var dstPath = fileUrl+ codeGenNum+ "." + fileFormat[fileFormat.length - 1];
-            console.log(dstPath);
-	        //重命名为真实文件名
-	        fs.rename(uploadedPath, dstPath, function(err) {
-	            if(err) res.json({status: 200,content: err});
-
-	        }) 
-	        callback({
-	        	type: fileFormat[fileFormat.length-1],
-	        	originName: inputFile.originalFilename,
-	        	codeGenNum: codeGenNum,
-	        	size: inputFile.size,
-	        	url: dstPath.slice(8)
-	        });
+            if(err) res.json({status: 100,content: err});
+            
+            if((!commonUtil.isEmpty(files))&&(!commonUtil.isEmpty(fields))&&(!commonUtil.isEmpty(files['file']))){
+                var inputFile = files['file'][0];
+                var fileFormat = inputFile.originalFilename.split(".");
+                var uploadedPath = inputFile.path;
+    
+                var codeGenNum = dateLib.getYear().toString()+month.toString()+codeGener.randomLenRadix(12,10);
+                var dstPath = fileUrl+ codeGenNum+ "." + fileFormat[fileFormat.length - 1];
+                //重命名为真实文件名
+                fs.rename(uploadedPath, dstPath, function(err) {
+                    if(err) res.json({status: 200,content: err});
+    
+                }) 
+                callback({
+                    status: 200,
+                    type: fileFormat[fileFormat.length-1],
+                    originName: inputFile.originalFilename,
+                    codeGenNum: codeGenNum,
+                    size: inputFile.size,
+                    url: dstPath.slice(8),
+                    fields: fields
+                });
+            }else{
+                callback({
+                    status: 0
+                });
+            }
+            
+	        
 	    })
 	});
 }

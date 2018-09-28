@@ -1,54 +1,49 @@
 <template>
 	<div class="billList">
-		<el-header style="margin-bottom: -10px;">
-			<a-Header class="header-panel"></a-Header>
-		</el-header>
 
-		<navbtn></navbtn>
 		<div class="bill-c-panel">
 			<div class="bill-panel">
 				<el-collapse accordion>
-					<el-collapse-item>
+					<el-collapse-item v-show="billListFlag">
+						<template slot="title">
+						<div style="text-align: center;line-height: 6rem;">暂无数据</div>
+						</template>
+					</el-collapse-item>
+					<el-collapse-item v-for="(listitem, index) in billListData" :key="index">
 						<template slot="title">
 							<div class="bill-list-item-box">
 								<div>
-									<img class="bill-list-item-img" src="../../static/img/header.jpg" />
+									<img class="bill-list-item-img" :src="localUrl+listitem.showImg" />
 								</div>
 								<div class="bill-list-item-box-content">
-									<div class="title">与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-									<div><span class="state-box" style="color: #00B7FF;border-color: #00B7FF;">待接单</span></div>
+									<div class="title">{{ listitem.describetion }}</div>
+									<div class="address">{{ listitem.address.info }}</div>
+									<div><span class="state-box" style="color: #00B7FF;border-color: #00B7FF;">{{ listitem.type }}</span></div>
 								</div>
 							</div>
 						</template>
 						<div class="bill-list-item-content">
-				    	<div class="descriction">与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
-				    	<div class="mine-box">
-				    		<div class="address">成都市成华区花生露58号</div>
-				    		<div class="tel">16554587445</div>
-				    	</div>
-				    	<div class="img-box">
-				    		<el-carousel :interval="4000" type="card" height="120px">
-    <el-carousel-item v-for="item in 6" :key="item">
-      <h3>{{ item }}</h3>
-    </el-carousel-item>
-  </el-carousel>
-				    	</div>
-				    	<div class="btn-box">
-			    		  	<el-button type="primary" round class="bill-btn">修正信息</el-button>
-				    		<el-button round class="bill-btn">取消订单</el-button>
-				    	</div>
-				    </div>
+							<div class="descriction">{{ listitem.describetion }}</div>
+							<div class="mine-box">
+								<div class="address">{{ listitem.address.info }}</div>
+								<div class="tel">{{ listitem.address.tel }}</div>
+							</div>
+							<div class="img-box">
+								<el-carousel :interval="4000" type="card" height="120px">
+									<el-carousel-item v-for="imgitem in listitem.img" :key="imgitem.Id">
+										<img :src="localUrl+imgitem.photoUrl" style="text-align: center;height: 100%;"/>
+									</el-carousel-item>
+								</el-carousel>
+							</div>
+							<div class="btn-box">	
+								<el-button v-show="listitem.typeNum==200" type="primary" round class="bill-btn">修正订单</el-button>
+								<el-button v-show="listitem.typeNum==200||listitem.typeNum==201" round class="bill-btn">取消订单</el-button>
+								<el-button v-show="listitem.typeNum==203" type="primary" round class="bill-btn">评价</el-button>
+								<el-button v-show="listitem.typeNum==102" type="primary" round class="bill-btn">编辑</el-button>
+							</div>
+						</div>
+
 					</el-collapse-item>
-					
-					
-					<el-collapse-item>
-						<template slot="title" class="bill-list-item">
-							<img class="bill-list-item-img" src="../../static/img/header.jpg" />
-						</template>
-						<div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-						<div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
-					</el-collapse-item>
-				
 				</el-collapse>
 			</div>
 		</div>
@@ -61,15 +56,28 @@
 		name: 'billList',
 		data() {
 			return {
-
+				billListFlag: true,
+				billListData: [],
+				localUrl: this.$localUrl
 			}
 		},
 		methods: {
-
+			getBillList: function(type) {
+				this.$axios.get(this.$localUrl + 'bill/list?code=' + sessionStorage.userCode + '&type=' + type).then((response) => {
+					var temp = response.data;
+					console.log(response);
+					this.billListFlag = true;
+					if(!this.isOwnEmpty(temp)) this.billListFlag = false;
+					this.billListData = temp;
+				}).catch((err) => {
+					console.log(err);
+				});
+			}
 		},
 		mounted: function() {
 			var pathTemp = this.$route.path.split('/');
 			console.log(pathTemp[3]);
+			this.getBillList(pathTemp[3]);
 		}
 	}
 </script>
@@ -148,8 +156,18 @@
 	.bill-list-item-box-content .title {
 		font-size: 16px;
 		width: 90%;
-		height: 60px;
-		line-height: 50px;
+		height: 40px;
+		line-height: 40px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.bill-list-item-box-content .address {
+		font-size: 10px;
+		color: #AAAAAA;
+		width: 90%;
+		height: 20px;
+		line-height: 20px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -165,12 +183,12 @@
 	}
 	
 	.bill-list-item-content {
-		/*padding: 10px;*/
+		padding: 10px;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
 		font-size: 12px;
-		width:100%;
+		width: calc(100% - 20px);
 	}
 	
 	.mine-box {
@@ -198,14 +216,17 @@
 		opacity: 0.75;
 		line-height: 200px;
 		margin: 0;
+		text-align: center;
 	}
 	
 	.el-carousel__item:nth-child(2n) {
 		background-color: #99a9bf;
+		text-align: center;
 	}
 	
 	.el-carousel__item:nth-child(2n+1) {
 		background-color: #d3dce6;
+		text-align: center;
 	}
 	
 	.btn-box {

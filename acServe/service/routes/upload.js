@@ -5,6 +5,8 @@ var util = require('util');
 var uploadModel = require('../lib/upload.lib');
 var dateLib = require('../lib/date.lib');
 var commonUtil = require('../lib/util.lib');
+var codeGenerLib = require('../lib/codeGener.lib');
+var db = require('../lib/mysql.lib');
 var fs = require('fs');
 const multer=require("multer");
 
@@ -45,9 +47,44 @@ router.route('/mul')
 })
 .post([commonUtil.jsonHeader], function(req, res, next) {
     uploadModel.mulUpload(req, res,function(data){
+        if(data.status === 200){
+            (async ()=>{
+                var dataTemp = {
+                  "code": 200,
+                  "messgae": "上传成功!"
+                }
+                
+                var userCode = commonUtil.replaceKuo(data.fields.userCode);
+                var userFlagCode = userCode.toString().slice(5,12);
+                var photoCode = commonUtil.replaceKuo(data.fields.photoCode);
+                if(commonUtil.isEmpty(photoCode)){
+                    photoCode = codeGenerLib.generPhotoCode(userFlagCode);
+                    while(1){
+                        var flag = await db.FindOne('photopool',{
+                            'photoCode': photoCode,
+                            'userCode': userCode
+                        })
+                        if(commonUtil.isEmpty(flag)) break;
+                    
+                        photoCode = codeGenerLib.generPhotoCode(userFlagCode);
+                    }
+                }
+               
+                var obj = {
+                    photoCode: photoCode,
+                    photoUrl: data.url,
+                    userCode: userCode,
+                    createTime: dateLib.getTimeStamp(),
+                    updateTime:dateLib.getTimeStamp()
+                }
+                await db.INSERT('photopool', obj,'');
 
-		res.json({status: 200,content:'上传成功！',data:data});
-
+                dataTemp.photoCode = photoCode;
+                res.json(dataTemp);
+            })();
+        }else{
+            res.json({"code": 0,"messgae":'上传失败!'});
+        }
     });
 });
 router.route('/for')

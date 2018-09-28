@@ -25,7 +25,7 @@ router.post('/create', [commonUtil.jsonHeader], function(req, res, next) {
       var flag = await db.FindOne('address',{'addressCode': addressCode})
       if(commonUtil.isEmpty(flag)) break;
 
-      addressCode = codeGenerLib.generCode();
+      addressCode = codeGenerLib.generPlaceCode();
     }
     obj.addressCode = addressCode;
     obj.createTime = dateLib.getTimeStamp();
@@ -39,7 +39,7 @@ router.post('/create', [commonUtil.jsonHeader], function(req, res, next) {
 router.get('/list', [commonUtil.jsonHeader], function(req, res, next) {
   (async ()=>{
     var temp = req.query.code;
-    console.log(temp);
+    // console.log(temp);
     let data = await db.FindAll('address', {
       userCode: temp
     },'createTime','desc');

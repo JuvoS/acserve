@@ -68,5 +68,25 @@ codeGener.generPlaceCode = function(){
 	return 'AR'+this.randomLenRadix(6,10)+M+D+h+m;
 }
 
+codeGener.generPhotoCode = function(ucode){
+	var date = new Date();
+    var Y = date.getFullYear();
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1);
+    var D = date.getDate();
+    var h = date.getHours();
+    var m = (date.getMinutes() < 10 ? '0'+(date.getMinutes()) : date.getMinutes());
+	return 'UP'+this.randomLenRadix(6,10)+M+D+h+m+ucode;
+}
+
+codeGener.generDemandCode = function(ucode){
+	var date = new Date();
+    var Y = date.getFullYear();
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1);
+    var D = date.getDate();
+    var h = date.getHours();
+    var m = (date.getMinutes() < 10 ? '0'+(date.getMinutes()) : date.getMinutes());
+	return 'AC'+this.randomLenRadix(6,10)+M+D+h+m+ucode;
+}
+
 
 module.exports = codeGener;

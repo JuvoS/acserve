@@ -8,22 +8,26 @@ var dateLib = require('../lib/date.lib');
 
 router.post('/create', [commonUtil.jsonHeader], function(req, res, next) {
   (async ()=>{
-    var obj = JSON.parse(JSON.stringify(req.body));
-    for( var k in obj){
-      obj = k;
+    var objTemp = JSON.parse(JSON.stringify(req.body));
+    for( var k in objTemp){
+      objTemp = k;
     }
-    obj = JSON.parse(obj);
+    objTemp = JSON.parse(objTemp);
+    var obj = {
+      usertel: objTemp.usertel,
+      userpass: objTemp.userpass
+    }
     var telFlag = await db.FindOne('user',{
       'userTel': obj.usertel
     });
     var data = {
       "code": 200,
-      "messgae": "创建成功!"
+      "message": "创建成功!"
     }
     if(!commonUtil.isEmpty(telFlag)){
       data = {
         "code": 0,
-        "messgae": "该手机号已注册，创建失败!"
+        "message": "该手机号已注册，创建失败!"
       }
     }else{
       var userCode = codeGenerLib.generCode();

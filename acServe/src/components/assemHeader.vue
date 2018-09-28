@@ -12,13 +12,13 @@
 			  <el-col :span="3" :offset="12">
 			  	<router-link to="/addresslist">
 			  	<div class="header-panel">
-			  		<i class="el-icon-setting"></i>
+			  		<i class="el-icon-location"></i>
 			  	</div>
 			  	</router-link>
 			  </el-col>
 			  <el-col :span="5">
 			  	<div class="header-panel">
-			  		<img src="../../static/img/header.jpg" />
+			  		<img src="../../static/img/logo.png" />
 			  	</div>
 			  </el-col>
 			</el-row>
@@ -43,11 +43,13 @@ export default {
 	width: 100%;
 	background: #FFFFFF;
 	margin: 0;
+	color: #333;
 }
 .header-panel {
 	height: 3rem;
 	line-height: 3rem;
 	overflow: hidden;
+	color: #333!important;
 }
 .header-panel img {
 	height: 2.5rem;

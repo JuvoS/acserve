@@ -141,6 +141,21 @@ var findAll = ( table, where, order='createTime', sort='desc', params = '')=>{
     var sql="SELECT * FROM "+databaseConfig.prefix+table+' '+_WHERE+' ORDER BY '+order+' '+sort;
     return sqlDo( sql, params);
 }
+var countAll = ( table, where, order='createTime', sort='desc', params = '')=>{
+    var _WHERE='';
+    if(util.isObject(where)){
+        _WHERE+='WHERE ';
+        for(var k in where){
+            _WHERE+=k+"='"+where[k]+"' AND ";
+        }
+      
+        _WHERE=_WHERE.slice(0,-4);
+    }else if(typeof where =='string' && !commonUtil.isEmpty(where)){
+        _WHERE='WHERE '+where;
+    }
+    var sql="SELECT count(*) FROM "+databaseConfig.prefix+table+' '+_WHERE+' ORDER BY '+order+' '+sort;
+    return sqlDo( sql, params);
+}
 var insert = ( table, obj, params = '')=>{
     var fields='';
     var values='';
@@ -150,8 +165,8 @@ var insert = ( table, obj, params = '')=>{
     }
     fields=fields.slice(0,-1);
     values=values.slice(0,-1);
-    var sql="INSERT INTO "+databaseConfig.prefix+table+'('+fields+') VALUES('+values+')';
-    // console.log(sql);
+    var sql="INSERT INTO "+databaseConfig.prefix+table+' ('+fields+') VALUES ('+values+')';
+    console.log(sql);
     return sqlDo( sql, params);
 }
 var update = ( table, sets, where, params = '')=>{
@@ -209,5 +224,6 @@ module.exports = {
     UPDATE  : update,
     DELETE  : del,
     FindAll : findAll,
-    PAGE    : page    
+    PAGE    : page,
+    COUNT   : countAll   
 }

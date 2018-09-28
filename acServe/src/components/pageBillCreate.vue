@@ -1,7 +1,7 @@
 <template>
 	<div class="formPage">
 		<el-header style="margin-bottom: -10px;">
-		  	<a-Header class="header-panel"></a-Header>
+		  	<ass-Header class="header-panel"></ass-Header>
 		</el-header>
 		<div class="bill-c-panel">
 			<div class="bill-panel">
@@ -25,13 +25,13 @@
 					<div class="bill-form-item-colmun">
 						<div class="form-title">需求描述</div>
 						<div class="form-colmun-text">
-							<textarea v-model="billForm.describe"></textarea>
+							<textarea v-model="billForm.describetion"></textarea>
 						</div>
 					</div>
 					<div class="bill-form-item-colmun">
 						<div class="form-title">现场情况</div>
 						<div class="form-colmun-text" >
-							<imgup v-on:photoByNow="photoByNow"></imgup>					
+							<ass-imgup v-on:photoByNow="photoByNow"></ass-imgup>					
 						</div>
 					</div>
 					<div class="bill-form-item-colmun">
@@ -53,7 +53,7 @@
 				<div class="address-form-list-title"><div class="title-box">添加地址</div><div class="title-icon" @click="closeAdrGet()"><i class="el-icon-close"></i></div></div>
 				<hr style="margin: 10px 0;background-color:#eee;height:1px;border:none;">
 				<div class="address-list">
-					<adrlist v-on:adrByNow="adrByNow"></adrlist>
+					<ass-adrlist v-on:adrByNow="adrByNow"></ass-adrlist>
 				</div>
 			</el-col>
 		</el-row>
@@ -75,15 +75,32 @@
 	        	},
 	        	billForm: {
 	        		addressCode: '',
-	        		describe: '',
-	        		photoCode: '',
-	        		supplyInfo: ''
+	        		describetion: '',
+	        		photoCode: '1111',
+	        		supplyInfo: '',
+	        		userCode: ''
 	        	}
 	    	}
       },
       methods: {
       	onSubBill(){
-      	 	console.log(this.billForm);
+      		console.log(this.billForm);
+			if(!this.billForm.addressCode) return this.warningNow('请选择地址');
+			if(!this.billForm.describetion) return this.warningNow('请填写需求');
+			
+			this.billForm.userCode = sessionStorage.userCode;
+			var dataForm = this.billForm;
+			this.$axios.post(this.$localUrl + 'bill/create', dataForm, {
+				transformRequest: [function(data) {return JSON.stringify(dataForm);}]
+			}).then((response) => {
+				this.$router.push('/bill/list/wait');
+			}).catch((err) => {
+				console.log(err);
+			});
+				
+      	},
+      	warningNow(val){
+      		this.$message({message: val,type: 'warning'});
       	},
       	addressGet(){
       		this.bgmaskFlag = true;
@@ -200,14 +217,14 @@
 	background: rgba(0,0,0,0.5);
 	width: 100%;
 	height: 100%;
-	position: absolute;
+	position: fixed;
 	z-index: 10;
 	top: 0;
 	left: 0;
 }
 .address-form-panel {
 	width: 100%;
-	position: absolute;
+	position: fixed;
 	top: 10%;
 	z-index: 11;
 }
