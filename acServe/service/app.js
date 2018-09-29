@@ -13,6 +13,8 @@ var uploadRouter = require('./routes/upload');
 var addressRouter = require('./routes/address');
 var billRouter = require('./routes/bill');
 
+var manageRouter = require('./routes/manage');
+
 var app = express();
 
 // view engine setup
@@ -32,6 +34,8 @@ app.use('/entry', entryRouter);
 app.use('/upload', uploadRouter);
 app.use('/address', addressRouter);
 app.use('/bill', billRouter);
+
+app.use('/manage', manageRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

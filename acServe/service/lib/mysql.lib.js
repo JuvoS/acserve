@@ -202,7 +202,7 @@ var del = ( table, where, params = '')=>{
     console.log(sql);
     return sqlDo( sql, params);
 }
-var page = ( table, where, current_page = 1, num=1, params = '')=>{
+var page = ( table, where, current_page = 1, num=1, order='Id', sort='asc', params = '')=>{
     if (current_page <= 1) {
         current_page = 1;
     }
@@ -210,6 +210,7 @@ var page = ( table, where, current_page = 1, num=1, params = '')=>{
     for(var k2 in where){
         _WHERE+=k+"='"+where[k2]+"' AND ";
     }
+    _WHERE += ' ORDER BY '+order+' '+sort;
     var sql = "SELECT * FROM "+databaseConfig.prefix+table+' '+_WHERE+" limit " + num + "  offset " + num * (current_page - 1);
     return sqlDo( sql, params);
 }

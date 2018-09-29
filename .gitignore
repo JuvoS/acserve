@@ -6,4 +6,7 @@ acServe/service/dist/
 acServe/service/node_modules/
 acServe/service/public/upload/
 acServe/service/npm-debug.log
+acServeManage/dist/
+acServeManage/node_modules/
+acServeManage/npm-debug.log
 .project
