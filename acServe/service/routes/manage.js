@@ -76,7 +76,7 @@ router.post('/login', [commonUtil.jsonHeader], function(req, res, next) {
       
       data = {
         "code": 200,
-        "messgae": "登录成功!",
+        "message": "登录成功!",
         "token": userToken,
         "userCode": telFlag[0].userCode
       }
@@ -90,7 +90,7 @@ router.get('/checkToken', [commonUtil.jsonHeader], function(req, res, next) {
 
     var data = {
       "code": 200,
-      "messgae": "当前可用!",
+      "message": "当前可用!",
       "token": temp
     }
     var tokenFlag = tokenLib.checkToken(temp);
@@ -165,6 +165,30 @@ router.post('/edit', [commonUtil.jsonHeader], function(req, res, next) {
     res.json(data);
   })();
   
+});
+router.post('/telcheck', [commonUtil.jsonHeader], function(req, res, next) {
+  (async ()=>{
+    var obj = JSON.parse(JSON.stringify(req.body));
+    for( var k in obj){
+      obj = k;
+    }
+    obj = JSON.parse(obj);
+    var data;
+    //手机号正则	
+    var phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;	
+    //电话	
+    if (!phoneReg.test(obj.userTel)) {
+      data = {"code": 101,"message": "请输入有效的手机号码!"}
+    }else{
+      var telFlag = await db.FindOne('user',{'userTel': obj.userTel});
+    
+      if(!commonUtil.isEmpty(telFlag)) {
+        data = {"code": 101,"message": "该手机号已注册!"}
+      }else{data = {"code": 200,"messgae": "可注册!"}}
+    }
+    
+    res.json(data);
+  })();
 });
 
 module.exports = router;

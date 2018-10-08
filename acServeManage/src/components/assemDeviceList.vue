@@ -1,27 +1,17 @@
 <template>
 	<el-container class="wrapper-content" v-loading="loading">
-		<el-row class="nav-btn-panel">
-			<div class="nav-btn-item">新增用户</div>
-			<div class="nav-btn-item">新增用户</div>
-			<div class="nav-btn-item">新增用户</div>
-		</el-row>
+
 			  <el-table :data="tableInfo" style="width: 100%;margin: 10px 0;" max-height="600">
-			    <el-table-column prop="Id" label="用户ID" width="120"></el-table-column>
-			    <el-table-column prop="userName" label="用户名" width="180"></el-table-column>
-			    <el-table-column prop="userTel" label="用户手机号" width="180"></el-table-column>
-			    <el-table-column prop="userCode" label="用户Code" width="120"></el-table-column>
-			    <el-table-column prop="userTypeCode" label="用户类型" width="60"></el-table-column>
-			    <el-table-column prop="userFlag" label="用户状态" width="60"></el-table-column>
-			    <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
-			    <el-table-column prop="updateTime" label="更新时间" width="180"></el-table-column>
+			    <el-table-column prop="Id" label="型号ID" width="120"></el-table-column>
+			    <el-table-column prop="userName" label="型号" width="180"></el-table-column>
+			    <el-table-column prop="userTel" label="类型" width="180"></el-table-column>
+			    <el-table-column prop="userCode" label="品牌" width="120"></el-table-column>
+			    <el-table-column prop="userTypeCode" label="服务期" width="120"></el-table-column>
+			    <el-table-column prop="userFlag" label="型号状态" width="120"></el-table-column>
 			    <el-table-column fixed="right" label="操作" width="120">
 			      <template slot-scope="scope">
-			        <el-button
-			          @click.native.prevent="deleteRow(scope.$index, tableData4)"
-			          type="text"
-			          size="small">
-			          移除
-			        </el-button>
+			        <el-button @click.native.prevent="deleteRow(scope.$index, tableData4)"
+			          type="text" size="small">移除</el-button>
 			        <el-button type="text" @click="editNow(scope.$index)">编辑</el-button>
 			      </template>
 			    </el-table-column>
@@ -73,9 +63,9 @@
 			return {
 				msg: 'userList',
 		        currentPage: 1,
-		        pageSizesNum: [10, 20, 40],
-		        pageSizeNum: 10,
-		        totalNum: 10,
+		        pageSizesNum: [2, 4, 6, 8,10,12],
+		        pageSizeNum: 4,
+		        totalNum: 40,
 				tableInfo: [],
 				dialogFormVisible: false,
 				loading: false,
@@ -129,6 +119,9 @@
 				}).catch((err) => {
 					console.log(err);
 				});
+			},
+			linkPop: function(val){
+				this.$router.push(val);
 			}
 		},
 		mounted: function() {
@@ -155,5 +148,8 @@
 	border: 1px solid #00B7FF;
 	border-radius: 20px;
 	color: #00B7FF;
+}
+.el-table th>.cell{
+	text-align: center;
 }
 </style>

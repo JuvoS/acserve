@@ -12,16 +12,32 @@ export default {
   data () {
     return {
       data: [{
-          label: '设备管理',
-          url: '/bill/list',
+          label: '用户管理',
+          url: '',
           children: [{
-            label: '添加设备',
-          	url: ''
-          },{
-          	label: '管理设备',
-          	url: ''
+            label: '新增用户',
+            url: '/user/create'
+          }, {
+            label: '管理用户',
+            url: '/user/list'
           }]
-        }, {
+        },{
+          label: '设备管理',
+          url: '/device/list',
+          children: [{
+            label: '品牌管理',
+          	url: '/device/brand'
+          },{
+          	label: '类型管理',
+          	url: '/device/mold'
+          },{
+          	label: '型号管理',
+          	url: '/device/model'
+          },{
+          	label: '服务期管理',
+          	url: '/device/time'
+          }]
+        },{
           label: '订单管理',
           url: '',
           children: [{
@@ -31,15 +47,22 @@ export default {
             label: '管理订单',
             url: '/bill/list'
           }]
-        }, {
-          label: '用户管理',
+        },{
+          label: '问答管理',
           url: '',
           children: [{
-            label: '新增用户',
-            url: '/user/create'
+            label: '新增问答',
+            url: '/question/create'
           }, {
-            label: '管理用户',
-            url: '/user/list'
+            label: '管理订单',
+            url: '/question/list'
+          }]
+        },{
+          label: '模块控制',
+          url: '',
+          children: [{
+            label: '管理模块',
+            url: '/module/list'
           }]
         }],
         defaultProps: {
@@ -73,6 +96,14 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.el-tree-node {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.el-tree-node__content {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 16px;
+}
 </style>

@@ -199,7 +199,6 @@ var del = ( table, where, params = '')=>{
         _WHERE = ' WHERE '+_WHERE;
     }
     var sql="DELETE  FROM "+ databaseConfig.prefix+table+ _WHERE;
-    console.log(sql);
     return sqlDo( sql, params);
 }
 var page = ( table, where, current_page = 1, num=1, order='Id', sort='asc', params = '')=>{

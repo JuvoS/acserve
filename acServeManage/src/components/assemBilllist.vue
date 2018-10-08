@@ -196,6 +196,7 @@
 		flex-direction: row;
 		justify-content: space-between;
 		margin: 5px 0;
+		width: 95%;
 	}
 	
 	.mine-box .address {

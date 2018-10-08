@@ -3,6 +3,13 @@
 		<el-header style="margin-bottom: -10px;">
 			<ass-Header class="header-panel"></ass-Header>
 		</el-header>
+		
+		<el-tabs :tab-position="tabPosition" style="min-height: 400px;background: #FFFFFF;padding: 10px;">
+		    <el-tab-pane label="用户管理">用户管理</el-tab-pane>
+		    <el-tab-pane label="配置管理">配置管理</el-tab-pane>
+		    <el-tab-pane label="角色管理">角色管理</el-tab-pane>
+		    <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
+		</el-tabs>
 
 		<ass-Navbtn v-on:getBillList="getBillList"></ass-Navbtn>
 		<div class="bill-c-panel">
@@ -67,7 +74,8 @@
 			return {
 				billListFlag: true,
 				billListData: [],
-				localUrl: this.$localUrl
+				localUrl: this.$localUrl,
+				tabPosition: 'left'
 			}
 		},
 		methods: {

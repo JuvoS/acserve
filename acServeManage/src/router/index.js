@@ -5,10 +5,17 @@ import assHeader from '@/components/assemHeader'
 import assFooter from '@/components/assemFooter'
 import assAside from '@/components/assemAside'
 import assemUserList from '@/components/assemUserList'
+import assemDeviceList from '@/components/assemDeviceList'
+import assemBrandNav from '@/components/assemBrandNav'
 import billCreatePage from '@/components/pageBillCreate'
 import billListPage from '@/components/pageBillList'
 import userCreatePage from '@/components/pageUserCreate'
 import userListPage from '@/components/pageUserList'
+import deviceListPage from '@/components/pageDeviceList'
+import deviceBrandPage from '@/components/pageDeviceBrand'
+import deviceMoldPage from '@/components/pageDeviceMold'
+import deviceModelPage from '@/components/pageDeviceModel'
+import deviceTimePage from '@/components/pageDeviceTime'
 
 import assNavBtn from '@/components/assemNavBtn'
 import assAdrlist from '@/components/assemAddressList'
@@ -30,6 +37,8 @@ Vue.component('ass-Header',assHeader);
 Vue.component('ass-Footer',assFooter);
 Vue.component('ass-Aside',assAside);
 Vue.component('ass-user-List',assemUserList);
+Vue.component('ass-device-List',assemDeviceList);
+Vue.component('ass-BrandNav',assemBrandNav);
 
 Vue.component('ass-Navbtn',assNavBtn);
 Vue.component('ass-Menu',assMenu);
@@ -61,6 +70,14 @@ export default new Router({
       name: 'addresslist',
       component: addressListPage
     },{
+    	path: '/user/create',
+    	name: 'userCreate',
+    	component: userCreatePage
+    },{
+    	path: '/user/list',
+    	name: 'userList',
+    	component: userListPage
+    },{
     	path: '/bill/create',
     	name: 'billCreate',
     	component: billCreatePage
@@ -69,45 +86,41 @@ export default new Router({
     	name: 'billListAll',
     	component: billListPage
     },{
-    	path: '/bill/list/wait',
-    	name: 'billListWait',
+    	path: '/device/create',
+    	name: 'billCreate',
+    	component: billCreatePage
+    },{
+    	path: '/device/list/',
+    	name: 'deviceListAll',
+    	component: deviceListPage
+    },{
+    	path: '/device/brand/',
+    	name: 'deviceBrand',
+    	component: deviceBrandPage
+    },{
+    	path: '/device/mold/',
+    	name: 'deviceMold',
+    	component: deviceMoldPage
+    },{
+    	path: '/device/model/',
+    	name: 'deviceModel',
+    	component: deviceModelPage
+    },{
+    	path: '/device/time/',
+    	name: 'deviceTime',
+    	component: deviceTimePage
+    },{
+    	path: '/question/create',
+    	name: 'questionCreate',
+    	component: billCreatePage
+    },{
+    	path: '/question/list/',
+    	name: 'questionListAll',
     	component: billListPage
     },{
-    	path: '/bill/list/serve',
-    	name: 'billListServe',
+    	path: '/module/list/',
+    	name: 'moduleListAll',
     	component: billListPage
-    },{
-    	path: '/bill/list/eval',
-    	name: 'billListEval',
-    	component: billListPage
-    },{
-    	path: '/bill/list/evaled',
-    	name: 'billListEvaled',
-    	component: billListPage
-    },{
-    	path: '/bill/list/abno',
-    	name: 'billListAbno',
-    	component: billListPage
-    },{
-    	path: '/bill/list/cancel',
-    	name: 'billListCancel',
-    	component: billListPage
-    },{
-    	path: '/bill/list/draft',
-    	name: 'billListDraft',
-    	component: billListPage
-    },{
-    	path: '/bill/list/del',
-    	name: 'billListDel',
-    	component: billListPage
-    },{
-    	path: '/user/create',
-    	name: 'userCreate',
-    	component: userCreatePage
-    },{
-    	path: '/user/list',
-    	name: 'userList',
-    	component: userListPage
     },{
       path: "*",
       redirect: "/404"
