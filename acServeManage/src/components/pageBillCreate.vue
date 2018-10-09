@@ -1,8 +1,5 @@
 <template>
 	<div class="formPage">
-		<el-header style="margin-bottom: -10px;">
-		  	<ass-Header class="header-panel"></ass-Header>
-		</el-header>
 		<div class="bill-c-panel">
 			<div class="bill-panel">
 				<div class="legend-title">需求表单</div>

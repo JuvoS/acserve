@@ -91,7 +91,7 @@
 		data() {
 			return {
 				msg: 'userList',
-				tabPosition: 'left',
+				tabPosition: 'top',
 		        currentPage: 1,
 		        pageSizesNum: [10, 20, 40],
 		        pageSizeNum: 10,

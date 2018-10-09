@@ -23,6 +23,11 @@
 <script>
 export default {
   name: 'App',
+  data () {
+  	return {
+  		
+  	}
+  },
   methods: {
   	checkTokenState: function(){
   		if(this.$route.path != '/login' && (this.$route.path!= '/reg')){

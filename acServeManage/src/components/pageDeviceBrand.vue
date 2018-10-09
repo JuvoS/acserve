@@ -74,7 +74,7 @@
 		data() {
 			return {
 				msg: 'deviceBrandList',
-				tabPosition: 'left',
+				tabPosition: 'top',
 		        currentPage: 1,
 		       pageSizesNum: [10, 20, 40],
 		        pageSizeNum: 10,

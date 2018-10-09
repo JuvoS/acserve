@@ -12,6 +12,9 @@ export default {
   data () {
     return {
       data: [{
+          label: '主页',
+          url: '/'
+        },{
           label: '用户管理',
           url: '',
           children: [{

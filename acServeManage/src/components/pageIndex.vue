@@ -3,18 +3,84 @@
   	<el-container class="wrapper-content">
 
 	  	<el-main class="wrapper-content">
-		  	<div>
-		  		<router-link to="/bill/create">
-		  			<el-button type="primary" round>发布需求</el-button>
-		  		</router-link>
+		  	<el-carousel :interval="4000" type="card" height="300px">
+			    <el-carousel-item v-for="item in 6" :key="item">
+			      <h3>{{ item }}</h3>
+			    </el-carousel-item>
+			  </el-carousel>
+			  
+			  <div class="wrapper-grid">
+		  		<div class="grid-wrapper">
+					  <div class="grid-item">
+					  	<el-card shadow="hover">
+							  <div slot="header" class="clearfix">
+							    <span>卡片名称</span>
+							    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+							  </div>
+							  <div v-for="o in 4" :key="o" class="text item">
+							    {{'列表内容 ' + o }}
+							  </div>
+							</el-card>
+					  </div>
+					  <div class="grid-item">
+					  	<el-card shadow="hover">
+							  <div slot="header" class="clearfix">
+							    <span>卡片名称</span>
+							    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+							  </div>
+							  <div v-for="o in 4" :key="o" class="text item">
+							    {{'列表内容 ' + o }}
+							  </div>
+							</el-card>
+					  </div>
+					  <div class="grid-item">
+					  	<el-card shadow="hover">
+							  <div slot="header" class="clearfix">
+							    <span>卡片名称</span>
+							    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+							  </div>
+							  <div v-for="o in 4" :key="o" class="text item">
+							    {{'列表内容 ' + o }}
+							  </div>
+							</el-card>
+					  </div>
+					  <div class="grid-item">
+					  	<el-card shadow="hover">
+							  <div slot="header" class="clearfix">
+							    <span>卡片名称</span>
+							    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+							  </div>
+							  <div v-for="o in 4" :key="o" class="text item">
+							    {{'列表内容 ' + o }}
+							  </div>
+							</el-card>
+					  </div>
+					  <div class="grid-item">
+					  	<el-card shadow="hover">
+							  <div slot="header" class="clearfix">
+							    <span>卡片名称</span>
+							    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+							  </div>
+							  <div v-for="o in 4" :key="o" class="text item">
+							    {{'列表内容 ' + o }}
+							  </div>
+							</el-card>
+					  </div>
+					  <div class="grid-item">
+					  	<el-card shadow="hover">
+							  <div slot="header" class="clearfix">
+							    <span>卡片名称</span>
+							    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+							  </div>
+							  <div v-for="o in 4" :key="o" class="text item">
+							    {{'列表内容 ' + o }}
+							  </div>
+							</el-card>
+					  </div>
+					</div>
 		  	</div>
-		  	
-		  	<ass-Menu-Serve></ass-Menu-Serve>
-				<ass-Menu></ass-Menu>
-				<ass-Menu-Serve></ass-Menu-Serve>
-				<ass-Menu></ass-Menu>
-		    
-	  	</el-main>
+			  
+			</el-main>
 		</el-container>
   </div>
 </template>
@@ -36,53 +102,47 @@ export default {
   
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-.header-pp {
-	height: 5rem;
-}
-.menu-panel {
-	height: 20rem;
-	width: 94%;
-	background: #FFFFFF;
-	margin: 0 auto;
-	margin-top: 2rem;
-	border-radius: 10px;
-	font-size: 12px;
-}
-.header-panel {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 999;
-}
-.wrapper-content::-webkit-scrollbar {/*滚动条整体样式*/
-	width: 0.25rem;     /*高宽分别对应横竖滚动条的尺寸*/
-	height: 1px;
-}
-.wrapper-content::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
-	border-radius: 0.2rem;
-	 -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-	background: #535353;
-}
-.wrapper-content::-webkit-scrollbar-track {/*滚动条里面轨道*/
-	-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-	border-radius: 0.2rem;
-	background: #EDEDED;
-}
+.el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 300px;
+    margin: 0;
+  }
+  
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+  
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+  }
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+  .wrapper-grid{
+	  min-height: 300px;
+		width: 100%;
+		margin: 0 auto;
+		font-size: 12px;
+ 	}
+ 	.grid-wrapper {
+		min-height: 300px;
+		display: grid;
+		grid-template-columns: 50% 50%;
+	  grid-template-rows: auto auto auto;
+	  text-align: center;
+	}
+	.grid-item {
+		width: 98%;
+		margin: 1%;
+		background: #FFFFFF;
+		
+	}
 </style>
