@@ -10,8 +10,8 @@
 			    <el-table-column prop="userName" label="用户名" width="180"></el-table-column>
 			    <el-table-column prop="userTel" label="用户手机号" width="180"></el-table-column>
 			    <el-table-column prop="userCode" label="用户Code" width="120"></el-table-column>
-			    <el-table-column prop="userTypeCode" label="用户类型" width="60"></el-table-column>
 			    <el-table-column prop="userFlag" label="用户状态" width="60"></el-table-column>
+			    <el-table-column prop="userTypeCode" label="用户类型" width="60"></el-table-column>
 			    <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
 			    <el-table-column prop="updateTime" label="更新时间" width="180"></el-table-column>
 			    <el-table-column fixed="right" label="操作" width="120">

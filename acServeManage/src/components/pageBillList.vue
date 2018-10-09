@@ -1,243 +1,232 @@
 <template>
-	<div class="billList">
-		<el-header style="margin-bottom: -10px;">
-			<ass-Header class="header-panel"></ass-Header>
-		</el-header>
-		
-		<el-tabs :tab-position="tabPosition" style="min-height: 400px;background: #FFFFFF;padding: 10px;">
-		    <el-tab-pane label="用户管理">用户管理</el-tab-pane>
-		    <el-tab-pane label="配置管理">配置管理</el-tab-pane>
-		    <el-tab-pane label="角色管理">角色管理</el-tab-pane>
-		    <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
-		</el-tabs>
-
-		<ass-Navbtn v-on:getBillList="getBillList"></ass-Navbtn>
-		<div class="bill-c-panel">
-			<div class="bill-panel">
-				<el-collapse accordion>
-					<el-collapse-item v-show="billListFlag">
-						<template slot="title">
-						<div style="text-align: center;line-height: 6rem;">暂无数据</div>
-						</template>
-					</el-collapse-item>
-					<el-collapse-item v-for="(listitem, index) in billListData" :key="index">
-						<template slot="title">
-							<div class="bill-list-item-box">
-								<div>
-									<img class="bill-list-item-img" :src="localUrl+listitem.showImg" />
-								</div>
-								<div class="bill-list-item-box-content">
-									<div class="title">{{ listitem.describetion }}</div>
-									<div class="address">{{ listitem.address.info }}</div>
-									<div><span class="state-box" style="color: #00B7FF;border-color: #00B7FF;">{{ listitem.type }}</span></div>
-								</div>
-							</div>
-						</template>
-						<div class="bill-list-item-content">
-							<div class="descriction">{{ listitem.describetion }}</div>
-							<div class="mine-box">
-								<div class="address">{{ listitem.address.info }}</div>
-								<div class="tel">{{ listitem.address.tel }}</div>
-							</div>
-							<div class="img-box">
-								<el-carousel :interval="4000" type="card" height="120px">
-									<el-carousel-item v-for="imgitem in listitem.img" :key="imgitem.Id">
-										<img :src="localUrl+imgitem.photoUrl" style="text-align: center;height: 100%;"/>
-									</el-carousel-item>
-								</el-carousel>
-							</div>
-							<div class="btn-box">
-								<el-button v-show="listitem.typeNum==200" type="primary" round class="bill-btn">接单</el-button>
-								<el-button v-show="listitem.typeNum==201" type="primary" round class="bill-btn">完成</el-button>
-								<el-button v-show="listitem.typeNum==201" round class="bill-btn">拒接</el-button>
-								<el-button v-show="listitem.typeNum==203" type="primary" round class="bill-btn">评价</el-button>
-								
-								<!--<el-button v-show="listitem.typeNum==200" type="primary" round class="bill-btn">修正订单</el-button>
-								<el-button v-show="listitem.typeNum==200||listitem.typeNum==201" round class="bill-btn">取消订单</el-button>
-								<el-button v-show="listitem.typeNum==203" type="primary" round class="bill-btn">评价</el-button>
-								<el-button v-show="listitem.typeNum==102" type="primary" round class="bill-btn">编辑</el-button>-->
-							</div>
-						</div>
-
-					</el-collapse-item>
+	<div class="deviceBrandList" v-loading="loading">	
+		<el-row class="nav-btn-panel" >
+  			<div v-for="(navItem, index) in brandNavMenu">
+  				<div class="nav-btn-item" @click="menuLink(navItem.link)">{{ navItem.name }}</div>
+  			</div>
 				
-				</el-collapse>
-			</div>
-		</div>
+			</el-row>
+		  <el-tabs :tab-position="tabPosition" @tab-click="changeTab" style="min-height: 400px;background: #FFFFFF;padding: 10px;">
+		    <el-tab-pane label="待派订单" prop="wait" name="wait">
+		    	<el-container class="wrapper-content" v-loading="loading">
+			  <el-table :data="tableWaitInfo" style="width: 100%;margin: 10px 0;" max-height="600">
+			    <el-table-column prop="Id" label="ID" width="50"></el-table-column>
+			    <el-table-column prop="describetion" label="订单需求" width="300"></el-table-column>
+			    <el-table-column prop="address.info" label="订单位置" width="120"></el-table-column>
+			    <el-table-column prop="personName" label="订单人" width="120"></el-table-column>
+			    <el-table-column prop="address.tel" label="订单电话" width="120"></el-table-column>
+			    <el-table-column prop="supplyInfo" label="其他留言" width="120"></el-table-column>
+			    <el-table-column prop="type" label="状态" width="80"></el-table-column>
+			    <el-table-column fixed="right" label="操作" width="120">
+			      <template slot-scope="scope">
+			        <el-button @click.native.prevent="deleteRow(scope.$index)"
+			          type="text" size="small">移除</el-button>
+			        <el-button type="text" @click="editNow(scope.$index)">编辑</el-button>
+			      </template>
+			    </el-table-column>
+			  </el-table>
+	 
+		      <el-footer class="main-panel-footer" height="100px">
+		      	<el-pagination
+			      @size-change="handleSizeChange"
+			      @current-change="handleCurrentChange"
+			      :current-page="currentPage"
+			      :page-sizes="pageSizesNum"
+			      :page-size="pageSizeNum"
+			      layout="total, sizes, prev, pager, next, jumper"
+			      :total="totalNum">
+			    </el-pagination>
+		      	<ass-Footer></ass-Footer>
+		      </el-footer>
+		      
+		      
+			</el-container>
+		    </el-tab-pane>
+		    <el-tab-pane label="全部订单" prop="all" name="all">
+		    	<el-form :model="brandForm">
+				  	<el-form-item label="品牌名" :label-width="formLabelWidth">
+				      <el-input v-model="brandForm.name" autocomplete="off"></el-input>
+				   </el-form-item>
+				  </el-form>
+	
+				    <el-button @click="resetForm()">取 消</el-button>
+				    <el-button type="primary" @click="submitForm()">确 定</el-button>
+
+		    </el-tab-pane>
+		  </el-tabs>
+		  <el-dialog title="编辑信息" :visible.sync="dialogFormVisible">
+		  	<el-form :model="brandForm">
+				  	<el-form-item label="品牌名" :label-width="formLabelWidth">
+				      <el-input v-model="brandForm.name" autocomplete="off"></el-input>
+				   </el-form-item>
+				  </el-form>
+	
+				    <el-button @click="resetForm()">取 消</el-button>
+				    <el-button type="primary" @click="editForm()">确 定</el-button>
+		  </el-dialog>
+		  <el-dialog
+  title="提示"
+  :visible.sync="centerDialogVisible"
+  width="30%"
+  center>
+  <span>确认删除<div v-model="delInfo"></div></span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="resetForm()">取 消</el-button>
+    <el-button type="primary" @click="doDelete()">确 定</el-button>
+  </span>
+</el-dialog>
+
 	</div>
 </template>
 
 <script>
 	export default {
-		name: 'billList',
+		name: 'deviceBrandList',
 		data() {
 			return {
-				billListFlag: true,
-				billListData: [],
-				localUrl: this.$localUrl,
-				tabPosition: 'left'
+				msg: 'deviceBrandList',
+				tabPosition: 'left',
+		        currentPage: 1,
+		       pageSizesNum: [10, 20, 40],
+		        pageSizeNum: 10,
+		        totalNum: 10,
+				tableWaitInfo: [],
+				dialogFormVisible: false,
+				centerDialogVisible: false,
+				loading: false,
+				brandForm: {},
+		        formLabelWidth: '80px',
+		        delInfo: '',
+		        brandNavMenu: [{
+			      	name: '添加品牌',
+			      	link: '/device/brand/'
+			      },{
+			      	name: '添加类型',
+			      	link: '/device/brand/'
+			      },{
+			      	name: '添加型号',
+			      	link: '/device/brand/'
+			      },{
+			      	name: '添加服务期',
+			      	link: '/device/brand/'
+			      }],
+			    billStatus: 'all'
 			}
 		},
 		methods: {
-			getBillList: function(type) {
-				this.$axios.get(this.$localUrl + 'bill/list?code=' + sessionStorage.userCode + '&type=' + type).then((response) => {
-					var temp = response.data;
-					this.billListFlag = true;
-					if(!this.isOwnEmpty(temp)) this.billListFlag = false;
-					this.billListData = temp;
+			handleSizeChange(val) {
+		        this.pageSizeNum = val;
+		        this.getBrandList();
+		    },
+		    handleCurrentChange(val) {
+		    	this.currentPage = val;
+		    	this.getBrandList();
+		    },
+		    deleteRow(index) {
+		    	this.centerDialogVisible = true;
+		        this.brandForm = this.tableInfo[index];
+		        this.delInfo = this.tableInfo[index].name;
+		    },
+		    doDelete() {
+		        this.loading = true;
+				this.brandForm.serveCode = sessionStorage.userCode;
+				var dataForm = this.brandForm;
+				this.$axios.post(this.$localUrl + 'device/del/brand', dataForm, {
+					transformRequest: [function(data) {return JSON.stringify(dataForm);}]
+				}).then((response) => {
+					this.resetForm();
+					this.$message({message: response.data.message,type: 'success'});
+					this.getBrandList();
+					this.loading = false;
+					this.centerDialogVisible = false;
 				}).catch((err) => {
 					console.log(err);
 				});
-			}
+		    },
+		    getBrandList: function() {
+				this.$axios.get(this.$localUrl + 'billServe/list/'+this.billStatus+'/'+this.currentPage+'/'+this.pageSizeNum).then((response) => {
+					var temp = response.data.data;
+					this.currentPage = parseInt(response.data.currentPage);
+					this.pageSizeNum = parseInt(response.data.pageSizeNum);
+					this.totalNum = parseInt(response.data.count);
+					this.tableWaitInfo = response.data.data;
+				}).catch((err) => {
+					console.log(err);
+				});
+			},
+			editNow: function(val){
+				this.brandForm = this.tableInfo[val];
+				this.dialogFormVisible = true;
+			},
+			editForm: function(){
+				this.loading = true;
+				this.brandForm.serveCode = sessionStorage.userCode;
+				var dataForm = this.brandForm;
+				this.$axios.post(this.$localUrl + 'device/edit/brand', dataForm, {
+					transformRequest: [function(data) {return JSON.stringify(dataForm);}]
+				}).then((response) => {
+					this.resetForm();
+					this.$message({message: response.data.message,type: 'success'});
+					this.getBrandList();
+					this.loading = false;
+				}).catch((err) => {
+					console.log(err);
+				});
+			},
+			resetForm: function(){
+				this.dialogFormVisible = false;
+				this.centerDialogVisible = false;
+				this.brandForm = {};
+			},
+			submitForm: function(){
+				this.loading = true;
+				this.brandForm.serveCode = sessionStorage.userCode;
+				var dataForm = this.brandForm;
+				this.$axios.post(this.$localUrl + 'device/create/brand', dataForm, {
+					transformRequest: [function(data) {return JSON.stringify(dataForm);}]
+				}).then((response) => {
+					this.resetForm();
+					this.$message({message: response.data.message,type: 'success'});
+					this.getBrandList();
+					this.loading = false;
+				}).catch((err) => {
+					console.log(err);
+				});
+			},
+			changeTab: function(tab, event) {
+		        this.billStatus = event.target.getAttribute('id').slice(4);
+		        this.getBrandList();
+	      	}
 		},
 		mounted: function() {
-			var pathTemp = this.$route.path.split('/');
-			this.getBillList(pathTemp[3]);
+			this.getBrandList();
 		}
 	}
 </script>
-<style>
-	.billList {
-		width: 100%;
-	}
-	
-	.el-header {
-		padding: 0;
-	}
-	
-	.bill-c-panel {
-		width: 100%;
-	}
-	
-	.bill-panel {
-		width: 96%;
-		min-height: 300px;
-		border-radius: 5px;
-		margin: 10px auto;
-		text-align: left;
-	}
-	
-	.el-collapse {
-		background: none;
-		border-top: 0px;
-	}
-	
-	.el-collapse-item {
-		border-radius: 5px;
-		margin: 10px auto;
-		background: #FFFFFF;
-	}
-	
-	.el-collapse-item__header {
-		height: 100px;
-	}
-	
-	.el-collapse-item__arrow {
-		line-height: 30px;
-		font-size: 25px;
-		font-weight: lighter;
-		color: #CCCCCC;
-		margin-top: 35px;
-		margin-right: 10px;
-		width: 6%;
-	}
-	
-	.el-collapse-item__content {
-		padding-bottom: 5px;
-	}
-	
-	.bill-list-item-img {
-		height: 80px;
-		line-height: 80px;
-		width: 80px;
-		margin: 10px;
-		border-radius: 5px;
-	}
-	
-	.bill-list-item-box {
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-	}
-	
-	.bill-list-item-box-content {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		height: 100px;
-		width: 80%;
-	}
-	
-	.bill-list-item-box-content .title {
-		font-size: 16px;
-		width: 90%;
-		height: 60px;
-		line-height: 50px;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	
-	.state-box {
-		padding: 5px;
-		padding-top: 3px;
-		padding-bottom: 3px;
-		border: 1px solid;
-		border-radius: 5px;
-		font-size: 8px;
-	}
-	
-	.bill-list-item-content {
-		/*padding: 10px;*/
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		font-size: 12px;
-		width: 100%;
-	}
-	
-	.mine-box {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		margin: 5px 0;
-	}
-	
-	.mine-box .address {
-		color: #00B7FF;
-	}
-	
-	.mine-box .tel {
-		color: #409eff;
-	}
-	
-	.img-box {
-		height: 150px;
-	}
-	
-	.el-carousel__item h3 {
-		color: #475669;
-		font-size: 14px;
-		opacity: 0.75;
-		line-height: 200px;
-		margin: 0;
-	}
-	
-	.el-carousel__item:nth-child(2n) {
-		background-color: #99a9bf;
-	}
-	
-	.el-carousel__item:nth-child(2n+1) {
-		background-color: #d3dce6;
-	}
-	
-	.btn-box {
-		/*float: right;*/
-		text-align: center;
-	}
-	
-	.bill-btn {
-		padding: 8px 16px !important;
-		font-size: 8px;
-	}
+<style scoped="">
+	.nav-btn-panel {
+	background: #FFFFFF;
+	font-size: 12px;
+	height: 40px;
+	line-height: 40px;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	width: 100%;
+}
+.nav-btn-item {
+	height: 20px;
+	line-height: 20px;
+	width: 80px;
+	margin: 10px;
+	border: 1px solid #409eff;
+	border-radius: 20px;
+	color: #409eff;
+}
+.brandNav {
+	width: 100%;
+}
+.el-table th>.cell{
+	text-align: center;
+}
 </style>

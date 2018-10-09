@@ -12,6 +12,7 @@ var entryRouter = require('./routes/entry');
 var uploadRouter = require('./routes/upload');
 var addressRouter = require('./routes/address');
 var billRouter = require('./routes/bill');
+var billServeRouter = require('./routes/billserve');
 var deviceRouter = require('./routes/device');
 
 var manageRouter = require('./routes/manage');
@@ -35,6 +36,7 @@ app.use('/entry', entryRouter);
 app.use('/upload', uploadRouter);
 app.use('/address', addressRouter);
 app.use('/bill', billRouter);
+app.use('/billServe', billServeRouter);
 app.use('/device', deviceRouter);
 
 app.use('/manage', manageRouter);

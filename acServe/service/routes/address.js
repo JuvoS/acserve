@@ -32,7 +32,7 @@ router.post('/create', [commonUtil.jsonHeader], function(req, res, next) {
     obj.updateTime = dateLib.getTimeStamp();
     await db.INSERT('address', obj,'');
 
-    res.json(data);
+    return res.json(data);
   })();
   
 });
@@ -43,13 +43,13 @@ router.get('/list', [commonUtil.jsonHeader], function(req, res, next) {
     let data = await db.FindAll('address', {
       userCode: temp
     },'createTime','desc');
-    res.json(data);
+    return res.json(data);
   })();
 });
 router.get('/page', [commonUtil.jsonHeader], function(req, res, next) {
   (async ()=>{
     let data = await db.FindAll('address', '');
-    res.json(data);
+    return res.json(data);
   })();
 });
 
@@ -72,7 +72,7 @@ router.post('/update', [commonUtil.jsonHeader], function(req, res, next) {
       addressCode  : obj.addressCode
     });
 
-    res.json(data);
+    return res.json(data);
   })();
 });
 
@@ -84,7 +84,7 @@ router.get('/del', function(req, res, next) {
     console.log(s);
   })();
 
-  res.send('respond with a resource');
+  return res.send('respond with a resource');
 });
 
 module.exports = router;

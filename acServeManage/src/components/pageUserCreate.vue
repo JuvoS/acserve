@@ -5,12 +5,12 @@
 			<el-card class="box-card">
 				<h3>创建用户</h3>
 				<hr>
-				<el-form ref="userInfoForm" :model="userInfoForm" :label-width="formLabelWidth">
-				  	<el-form-item label="用户名">
+				<el-form ref="userInfoForm" :model="userInfoForm" :rules="rules" :label-width="formLabelWidth">
+				  	<el-form-item label="用户名" prop="userName">
 				      <el-input v-model="userInfoForm.userName" autocomplete="off"></el-input>
 				    </el-form-item>
-				    <el-form-item label="手机号">
-				      <el-input v-model="userInfoForm.userTel" autocomplete="off" @change="telChange()"></el-input>
+				    <el-form-item label="手机号" prop="userTel">
+				      <el-input v-model="userInfoForm.userTel" v-model.number="userInfoForm.userTel" autocomplete="off" @change="telChange()"></el-input>
 				    </el-form-item>
 				    <el-form-item label="手机号检验">
 				      <el-button @click="checkTelState()">检验</el-button>
@@ -20,7 +20,10 @@
 				      <el-input v-model="userInfoForm.userPass" autocomplete="off"></el-input>
 				    </el-form-item>
 				    <el-form-item label="用户状态">
-				      <el-input v-model="userInfoForm.userFlag" autocomplete="off"></el-input>
+				      <el-select v-model="userInfoForm.userFlag" placeholder="请选择用户状态">
+					      <el-option label="可用" value="0"></el-option>
+					      <el-option label="冻结" value="101"></el-option>
+						</el-select>
 				    </el-form-item>
 				    <el-form-item label="账号类型">
 				    	<el-select v-model="userInfoForm.userTypeCode" placeholder="请选择账号类型">
@@ -47,11 +50,21 @@
 			return {
 				msg: 'userCreate',
 				userInfoForm: {
-					userName: 'AC',
-					userTel: '',
+					userName: 'AC5',
+					userTel: '17852600210',
 					userPass: '',
-					userFlag: '',
-					userTypeCode: ''
+					userFlag: '0',
+					userTypeCode: '0'
+				},
+				rules: {
+					userName: [
+						{ required: true, message: '请输入活动名称', trigger: 'blur' },
+	            		{ min: 3, max: 12, message: '长度在 3 到 12 个字符', trigger: 'blur' }],
+            		userTel: [
+            			{validator: this.checkPhone, trigger: 'blur'}],
+        			userPass: [
+        				{ required: true, message: '请输入密码', trigger: 'blur' },
+	            		{ min: 6, max: 12, message: '长度在 6 到 20 个字符', trigger: 'blur' }]
 				},
 				formLabelWidth: '120px',
 				loading: false,
@@ -59,29 +72,46 @@
 			}
 		},
 		methods: {
-			onSubmit() {
-				console.log(this.userInfoForm);
-//		        this.loading = true;
-//				this.userInfoForm.serveCode = sessionStorage.userCode;
-//				
-//				if(this.checkInfo){
-//					var dataForm = this.userInfoForm;
-//					this.$axios.post(this.$localUrl + 'manage/edit', dataForm, {
-//						transformRequest: [function(data) {return JSON.stringify(dataForm);}]
-//					}).then((response) => {
-//						this.resetForm();
-//						this.getBillList();
-//						this.loading = false;
-//					}).catch((err) => {
-//						console.log(err);
-//					});
-//				}
+			checkPhone: function(rule, value, callback){
+				if (!value) {
+					return callback(new Error('手机号不能为空'));
+				} else {
+					const reg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;	
+					console.log(reg.test(value));
+					if (reg.test(value)) {
+						callback();
+					} else {
+						return callback(new Error('请输入正确的手机号'));
+					}        
+				}
+			},
+			onSubmit() {  
+				if(this.checkInfo()){
+					this.loading = true;
+					this.userInfoForm.serveCode = sessionStorage.userCode;
+					var dataForm = this.userInfoForm;
+					this.$axios.post(this.$localUrl + 'manage/create', dataForm, {
+						transformRequest: [function(data) {return JSON.stringify(dataForm);}]
+					}).then((response) => {
+						this.messageVal(response.data.message,response.data.code);
+						this.$router.push('/user/list');
+						this.loading = false;
+					}).catch((err) => {
+						console.log(err);
+					});
+				}
 				
 			},
 			checkInfo: function(){
-				if(this.isEmpty(this.userInfoForm.userName)) return this.messageVal('请填写用户名');
-				if(this.isEmpty(this.userInfoForm.userTel)) return this.messageVal('请填写手机号');
-				if(this.isEmpty(this.userInfoForm.userPass)) return this.messageVal('请填写手机号');
+				if(this.isStrEmpty(this.userInfoForm.userName)){ this.messageVal('请填写用户名');return false;}
+				if(this.isStrEmpty(this.userInfoForm.userTel)) { this.messageVal('请填写手机号');return false;}
+				if(!this.isPhoneNum(this.userInfoForm.userTel)) { this.messageVal('请输入有效的手机号码!');return false;}
+				if(this.isStrEmpty(this.userInfoForm.userPass)) {this.messageVal('请填写密码');return false;}
+				if(this.isStrEmpty(this.userInfoForm.userFlag)) {this.messageVal('请选择用户状态');return false;}
+				if(this.isStrEmpty(this.userInfoForm.userTypeCode)) {this.messageVal('请选择账号类型');return false;}
+				if(!this.telFlag) {this.messageVal('请检验手机号是否注册');return false;}
+				
+				return true;
 			},
 			messageVal: function(val, typeCode = '101'){
 				if(typeCode == '101') {
@@ -100,12 +130,13 @@
 				console.log(this.userInfoForm.userTel);
 				this.telFlag = false;
 				if(!this.isStrEmpty(this.userInfoForm.userTel)){
-					this.telFlag = true;
 					var dataForm = {userTel: this.userInfoForm.userTel};
 					this.$axios.post(this.$localUrl + 'manage/telcheck', dataForm, {
 						transformRequest: [function(data) {return JSON.stringify(dataForm);}]
 					}).then((response) => {
-						console.log(response);
+						if(this.messageVal(response.data.message,response.data.code)){
+							this.telFlag = true;
+						}
 					}).catch((err) => {
 						console.log(err);
 					});

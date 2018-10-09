@@ -14,11 +14,12 @@ router.post('/create', [commonUtil.jsonHeader], function(req, res, next) {
     }
     objTemp = JSON.parse(objTemp);
     var obj = {
-      usertel: objTemp.usertel,
-      userpass: objTemp.userpass
+      userName: objTemp.userName,
+      userTel: objTemp.userTel,
+      userPass: objTemp.userPass
     }
     var telFlag = await db.FindOne('user',{
-      'userTel': obj.usertel
+      'userTel': obj.userTel
     });
     var data = {
       "code": 200,
@@ -27,7 +28,8 @@ router.post('/create', [commonUtil.jsonHeader], function(req, res, next) {
     if(!commonUtil.isEmpty(telFlag)){
       data = {
         "code": 0,
-        "message": "该手机号已注册，创建失败!"
+        "message": "该手机号已注册，创建失败!",
+        "data":telFlag
       }
     }else{
       var userCode = codeGenerLib.generCode();
@@ -38,8 +40,10 @@ router.post('/create', [commonUtil.jsonHeader], function(req, res, next) {
         userCode = codeGenerLib.generCode();
       }
       obj.userCode = userCode;
+      delete obj.serveCode;
       obj.createTime = dateLib.getTimeStamp();
       obj.updateTime = dateLib.getTimeStamp();
+      console.log(obj);
       await db.INSERT('user', obj,'');
     }
     res.json(data);
@@ -100,15 +104,30 @@ router.get('/checkToken', [commonUtil.jsonHeader], function(req, res, next) {
     res.json(data);
   })();
 });
-router.get('/del', function(req, res, next) {
+router.post('/del', [commonUtil.jsonHeader], function(req, res, next) {
   (async ()=>{
-    let s = await db.DELETE('user', {
-      username  : 'Juvos'
-    });
-    console.log(s);
-  })();
+    var obj = JSON.parse(JSON.stringify(req.body));
+    for( var k in obj){
+      obj = k;
+    }
+    obj = JSON.parse(obj);
+    
+    var data = {
+      "code": 200,
+      "message": "删除成功!",
+      'data': obj
+    }
+    
+    var createTime = dateLib.getTimeStamp();
+    var updateTime = dateLib.getTimeStamp();
 
-  res.send('respond with a resource');
+    await db.INSERT('userservelog', { userCode: obj.serveCode,  did: '删除品牌'+obj.Id+'名为：'+obj.name, createTime: createTime, updateTime:updateTime },'');
+    delete obj.serveCode;
+    await db.DELETE('user', { Id: obj.Id },'');
+
+    res.json(data);
+  })();
+  
 });
 
 router.get('/page', [commonUtil.jsonHeader], function(req, res, next) {
@@ -138,30 +157,26 @@ router.get('/page/:pageIndex/:pageSizeNum', [commonUtil.jsonHeader], function(re
 
 router.post('/edit', [commonUtil.jsonHeader], function(req, res, next) {
   (async ()=>{
-    var objTemp = JSON.parse(JSON.stringify(req.body));
-    for( var k in objTemp){
-      objTemp = k;
+    var obj = JSON.parse(JSON.stringify(req.body));
+    for( var k in obj){
+      obj = k;
     }
-    console.log(objTemp);
-    objTemp = JSON.parse(objTemp);
-    var obj = {userCode: objTemp.serveCode}
-    var serveFlag = await db.FindOne('user',obj);
+    obj = JSON.parse(obj);
+    
     var data = {
       "code": 200,
-      "message": "操作成功!"
+      "message": "修改成功!"
     }
-    if(commonUtil.isEmpty(serveFlag)){
-      data = {
-        "code": 0,
-        "message": "账号无权限，操作失败!"
-      }
-    }else{
-      delete objTemp.serveCode;
-      objTemp.updateTime = dateLib.getTimeStamp();
-      await db.UPDATE('user', objTemp,{
-        userCode: objTemp.userCode
-      });
-    }
+    
+    var createTime = dateLib.getTimeStamp();
+    var updateTime = dateLib.getTimeStamp();
+
+    obj.updateTime = dateLib.getTimeStamp();
+    await db.INSERT('userservelog', { userCode: obj.serveCode,  did: '修改用户'+obj.Id+'为：'+JSON.stringify(obj), createTime: createTime, updateTime:updateTime },'');
+    delete obj.serveCode;
+    console.log(obj);
+    await db.UPDATE('user', obj, { Id: obj.Id },'');
+
     res.json(data);
   })();
   
@@ -184,10 +199,23 @@ router.post('/telcheck', [commonUtil.jsonHeader], function(req, res, next) {
     
       if(!commonUtil.isEmpty(telFlag)) {
         data = {"code": 101,"message": "该手机号已注册!"}
-      }else{data = {"code": 200,"messgae": "可注册!"}}
+      }else{data = {"code": 200,"message": "可注册!"}}
     }
     
     res.json(data);
+  })();
+});
+router.get('/checkPerson/:userCode', [commonUtil.jsonHeader], function(req, res, next) {
+  (async ()=>{
+    var telFlag = await db.FindOne('user',{ 'userCode': req.params.userCode });
+    var data = {"code": 200,"message": "查询成功!","customFlag": true,"serveFlag": false};
+
+    if(telFlag[0].userTypeCode == 101){
+      data.customFlag = false;
+      data.serveFlag = true;
+    }
+
+    return res.json(data);
   })();
 });
 

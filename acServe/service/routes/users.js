@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
     console.log(s);
   })();
 
-  res.send('respond with a resource');
+  return res.send('respond with a resource');
 });
 /* GET users listing. */
 router.get('/insert', function(req, res, next) {
@@ -23,7 +23,7 @@ router.get('/insert', function(req, res, next) {
     console.log(s);
   })();
 
-  res.send('respond with a resource');
+  return res.send('respond with a resource');
 });
 router.get('/update', function(req, res, next) {
   (async ()=>{
@@ -38,7 +38,7 @@ router.get('/update', function(req, res, next) {
     console.log(s);
   })();
 
-  res.send('respond with a resource');
+  return res.send('respond with a resource');
 });
 router.get('/del', function(req, res, next) {
   (async ()=>{
@@ -48,7 +48,7 @@ router.get('/del', function(req, res, next) {
     console.log(s);
   })();
 
-  res.send('respond with a resource');
+  return res.send('respond with a resource');
 });
 router.get('/page', function(req, res, next) {
   (async ()=>{
@@ -56,7 +56,7 @@ router.get('/page', function(req, res, next) {
     console.log(s);
   })();
 
-  res.send('respond with a resource');
+  return res.send('respond with a resource');
 });
 router.get('/page/:pageNum', function(req, res, next) {
   (async ()=>{
@@ -65,7 +65,7 @@ router.get('/page/:pageNum', function(req, res, next) {
     console.log(s);
   })();
 
-  res.send('respond with a resource');
+  return res.send('respond with a resource');
 });
 
 module.exports = router;

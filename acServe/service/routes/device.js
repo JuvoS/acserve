@@ -46,7 +46,7 @@ router.post('/create/:deName', [commonUtil.jsonHeader], function(req, res, next)
       await db.INSERT('detime', { name: obj.name, createTime: createTime, updateTime:updateTime },'');
     }
 
-    res.json(data);
+    return res.json(data);
   })();
   
 });
@@ -79,7 +79,7 @@ router.get('/list/:deName/:pageIndex/:pageSizeNum', [commonUtil.jsonHeader], fun
       "count":countNum[0]['count(*)']
     }
     data.data = s;
-    res.json(data);
+    return res.json(data);
   })();
 
 });
@@ -104,7 +104,7 @@ router.get('/alllist/:deName', [commonUtil.jsonHeader], function(req, res, next)
     }
     
     var data = s;
-    res.json(data);
+    return res.json(data);
   })();
 
 });
@@ -146,7 +146,7 @@ router.post('/edit/:deName', [commonUtil.jsonHeader], function(req, res, next) {
       await db.UPDATE('detime', { name: obj.name, updateTime:updateTime }, { Id: obj.Id },'');
     }
 
-    res.json(data);
+    return res.json(data);
   })();
   
 });
@@ -187,7 +187,7 @@ router.post('/del/:deName', [commonUtil.jsonHeader], function(req, res, next) {
       await db.DELETE('detime', { Id: obj.Id },'');
     }
 
-    res.json(data);
+    return res.json(data);
   })();
   
 });

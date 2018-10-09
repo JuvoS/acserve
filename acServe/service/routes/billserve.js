@@ -197,26 +197,26 @@ router.get('/menuServe', [commonUtil.jsonHeader], function(req, res, next) {
     return res.json(data);
   })();
 });
-router.get('/listServe', [commonUtil.jsonHeader], async (req, res, next)=> {
+router.get('/list/:billStatus/:pageIndex/:pageSizeNum', [commonUtil.jsonHeader], async (req, res, next)=> {
 
-  var temp = req.query.code;
-  var type = req.query.type;
+  var billStatus = req.params.billStatus;
 
   var demandFindObj = {};
   
-  if(type!='all') demandFindObj.demandFlag = commonUtil.changeTypeFromStr(type);//获取状态值
+  if(billStatus!='all') demandFindObj.demandFlag = commonUtil.changeTypeFromStr(billStatus);//获取状态值
 
-  let data = await db.FindAll('demand', demandFindObj,'createTime','desc');
+  let dataTemp = await db.PAGE('demand',demandFindObj,req.params.pageIndex,req.params.pageSizeNum,'createTime','desc');
   var list = [];
-  for(var item in data){
-    let addressTemp = await db.FindOne('address', {addressCode:data[item].addressCode},'createTime','desc');
+  for(var item in dataTemp){
+    let addressTemp = await db.FindOne('address', {addressCode:dataTemp[item].addressCode},'createTime','desc');
     
     var t = {
-      demandCode: data[item].demandCode,
-      type: commonUtil.changeTypeFromNum(data[item].demandFlag),
-      typeNum: data[item].demandFlag,
-      describetion: data[item].describetion,
-      supplyInfo: data[item].supplyInfo,
+      demandCode: dataTemp[item].demandCode,
+      type: commonUtil.changeTypeFromNum(dataTemp[item].demandFlag),
+      typeNum: dataTemp[item].demandFlag,
+      describetion: dataTemp[item].describetion,
+      supplyInfo: dataTemp[item].supplyInfo,
+      personName: dataTemp[item].personName,
       address:{
         info: addressTemp[0].info,
         tel: addressTemp[0].tel
@@ -226,15 +226,25 @@ router.get('/listServe', [commonUtil.jsonHeader], async (req, res, next)=> {
     }
 
     let imgTemp;
-    if(data[item].photoCode!='1111'){
-      imgTemp = await db.FindAll('photopool', {photoCode:data[item].photoCode},'createTime','desc');
+    if(dataTemp[item].photoCode!='1111'){
+      imgTemp = await db.FindAll('photopool', {photoCode:dataTemp[item].photoCode},'createTime','desc');
       t.img = imgTemp;
       t.showImg = imgTemp[0].photoUrl;
     }
     
     list.push(t);
   }
-  return res.json(list);
+
+  let countNum = await db.COUNT('demand',demandFindObj);
+  var data = {
+    "code": 200,
+    "message": "获取用户信息成功!",
+    "currentPage": req.params.pageIndex,
+    "pageSizeNum": req.params.pageSizeNum,
+    "count":countNum[0]['count(*)']
+  }
+  data.data = list;
+  return res.json(data);
 
 });
 

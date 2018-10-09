@@ -8,6 +8,7 @@ import assAdrlist from '@/components/assemAddressList'
 import assImgup from '@/components/assemImgUp'
 import assMenu from '@/components/assemMenu'
 import assMenuServe from '@/components/assemMenuServe'
+import assemMenuGrid from '@/components/assemMenuGrid'
 import assBillList from '@/components/assemBillList'
 import assBillServe from '@/components/assemBillServe'
 
@@ -36,6 +37,7 @@ Vue.component('ass-Footer',assFooter);
 Vue.component('ass-Navbtn',assNavBtn);
 Vue.component('ass-Menu',assMenu);
 Vue.component('ass-Menu-Serve',assMenuServe);
+Vue.component('ass-Menu-Grid',assemMenuGrid);
 Vue.component('ass-adrlist',assAdrlist);
 Vue.component('ass-imgup',assImgup);
 Vue.component('ass-billlist',assBillList);

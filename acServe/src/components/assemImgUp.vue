@@ -28,6 +28,7 @@
 	        	adrPanelFlag: false,
 	        	imgFormFlag: false,
 	        	photoNum: 0,
+	        	photoMaxNum: 5,
 	        	photoCode: '',
 	        	imglist: []
 	    	}
@@ -38,7 +39,7 @@
 	      	},
 	      	upLoadClick() {
 	      		this.$emit('photoByNow', this.photoCode);
-	      		if(this.photoNum<2) return document.getElementById("upload-input").click();
+	      		if(this.photoNum<this.photoMaxNum) return document.getElementById("upload-input").click();
 	      		
 	      		return this.warningMessage('只能上传5张图片');
 			},
@@ -68,9 +69,15 @@
 				formData.append('file', this.file); 
 				let config = {headers: {'Content-Type': 'multipart/form-data'}};
 				 
-				this.$axios.post(this.$localUrl+'upload/mul', formData, config).then((res) => {
-					this.photoNum++;
-					this.getImgList();
+				this.$axios.post(this.$localUrl+'upload/mul', formData, config).then((response) => {
+//					console.log(response);
+					if(response.data.status == 200){
+						this.photoNum++;
+						this.getImgList();
+					}else{
+						this.$message(response.data.message,'warning');
+					}
+					
 				}).catch((err) => {
 			        console.log(err);
 			    });

@@ -22,6 +22,13 @@
 						</div>
 						<div></div>
 					</div>
+					<div class="bill-form-item-row">
+						<div class="left-flex-box">
+							<span>怎么称呼</span>
+							<input v-model="billForm.personName" />
+						</div>
+						<div></div>
+					</div>
 					<div class="bill-form-item-colmun">
 						<div class="form-title">需求描述</div>
 						<div class="form-colmun-text">
@@ -78,7 +85,8 @@
 	        		describetion: '',
 	        		photoCode: '1111',
 	        		supplyInfo: '',
-	        		userCode: ''
+	        		userCode: '',
+	        		personName: ''
 	        	}
 	    	}
       },
@@ -86,6 +94,7 @@
       	onSubBill(){
       		console.log(this.billForm);
 			if(!this.billForm.addressCode) return this.warningNow('请选择地址');
+			if(!this.billForm.personName) return this.warningNow('请填写称呼');
 			if(!this.billForm.describetion) return this.warningNow('请填写需求');
 			
 			this.billForm.userCode = sessionStorage.userCode;

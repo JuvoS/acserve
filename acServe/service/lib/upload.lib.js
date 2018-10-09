@@ -22,7 +22,7 @@ uploadModel.mulUpload = async function (req, res, callback){
 	    // form.maxFields = 1000;   //设置所有文件的大小总和
 	    //上传后处理
 	    form.parse(req, function(err, fields, files) {
-            if(err) res.json({status: 100,content: err});
+            if(err) return callback({status: 0,content: err});
             
             if((!commonUtil.isEmpty(files))&&(!commonUtil.isEmpty(fields))&&(!commonUtil.isEmpty(files['file']))){
                 var inputFile = files['file'][0];
@@ -33,7 +33,7 @@ uploadModel.mulUpload = async function (req, res, callback){
                 var dstPath = fileUrl+ codeGenNum+ "." + fileFormat[fileFormat.length - 1];
                 //重命名为真实文件名
                 fs.rename(uploadedPath, dstPath, function(err) {
-                    if(err) res.json({status: 200,content: err});
+                    if(err) return callback({status: 0,content: err});
     
                 }) 
                 callback({
@@ -72,13 +72,13 @@ uploadModel.forUpload = function (req, res, callback){
         total: bytesExpected 
      }; 
      console.log('[progress]: ' + JSON.stringify(progressInfo)); 
-     res.write(JSON.stringify(progressInfo)); 
+     return res.write(JSON.stringify(progressInfo)); 
    })
    .on('file', function (filed, file) {
       allFile.push([filed, file]);//收集传过来的所有文件
    })
    .on('end', function() { 
-      res.end('上传成功！'); 
+      return res.end('上传成功！'); 
    })
    .on('error', function(err) {
      console.error('上传失败：', err.message); 

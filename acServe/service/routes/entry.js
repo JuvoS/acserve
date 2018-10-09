@@ -42,14 +42,14 @@ router.post('/create', [commonUtil.jsonHeader], function(req, res, next) {
       obj.updateTime = dateLib.getTimeStamp();
       await db.INSERT('user', obj,'');
     }
-    res.json(data);
+    return res.json(data);
   })();
   
 });
 router.get('/page', [commonUtil.jsonHeader], function(req, res, next) {
   (async ()=>{
     let data = await db.FindAll('user', '');
-    res.json(data);
+    return res.json(data);
   })();
 });
 
@@ -85,7 +85,7 @@ router.post('/login', [commonUtil.jsonHeader], function(req, res, next) {
         "userCode": telFlag[0].userCode
       }
     }
-    res.json(data);
+    return res.json(data);
   })();
 });
 router.get('/checkToken', [commonUtil.jsonHeader], function(req, res, next) {
@@ -101,7 +101,7 @@ router.get('/checkToken', [commonUtil.jsonHeader], function(req, res, next) {
     if(!tokenFlag) data = {"code": 101,"messgae": "当前已过期!"}
     data.flag = tokenFlag;
 
-    res.json(data);
+    return res.json(data);
   })();
 });
 router.get('/del', function(req, res, next) {
@@ -112,7 +112,7 @@ router.get('/del', function(req, res, next) {
     console.log(s);
   })();
 
-  res.send('respond with a resource');
+  return res.send('respond with a resource');
 });
 router.get('/page', function(req, res, next) {
   (async ()=>{
@@ -120,7 +120,7 @@ router.get('/page', function(req, res, next) {
     console.log(s);
   })();
 
-  res.send('respond with a resource');
+  return res.send('respond with a resource');
 });
 router.get('/page/:pageNum', function(req, res, next) {
   (async ()=>{
@@ -129,7 +129,7 @@ router.get('/page/:pageNum', function(req, res, next) {
     console.log(s);
   })();
 
-  res.send('respond with a resource');
+  return res.send('respond with a resource');
 });
 
 module.exports = router;

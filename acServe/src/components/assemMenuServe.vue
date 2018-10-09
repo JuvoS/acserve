@@ -34,7 +34,6 @@ export default {
   methods: {
     getMenuInfo(){
     	this.$axios.get(this.$localUrl + 'bill/menuServe?code='+sessionStorage.userCode).then((response) => {
-				console.log(response.data);
 				this.menu = response.data.menu;
 			}).catch((err) => {
 				console.log(err);

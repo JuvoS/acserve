@@ -25,3 +25,11 @@ Vue.prototype.isStrEmpty = function(obj){
 export default({
 
 });
+Vue.prototype.isPhoneNum = function(tel){
+	//手机号正则	
+    var phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;	
+    //电话	
+    if (phoneReg.test(tel))  return true;
+    
+    return false;
+}

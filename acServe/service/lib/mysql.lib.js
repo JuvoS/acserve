@@ -207,10 +207,16 @@ var page = ( table, where, current_page = 1, num=1, order='Id', sort='asc', para
     }
     var _WHERE='';
     for(var k2 in where){
-        _WHERE+=k+"='"+where[k2]+"' AND ";
+        _WHERE+=k2+"='"+where[k2]+"' AND ";
+    }
+    
+    _WHERE=_WHERE.slice(0,-4);
+    if(!commonUtil.isEmpty(_WHERE)){
+        _WHERE = ' WHERE '+_WHERE;
     }
     _WHERE += ' ORDER BY '+order+' '+sort;
     var sql = "SELECT * FROM "+databaseConfig.prefix+table+' '+_WHERE+" limit " + num + "  offset " + num * (current_page - 1);
+    console.log(sql);
     return sqlDo( sql, params);
 }
 //模块导出

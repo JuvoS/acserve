@@ -28,30 +28,29 @@ var upload = multer({
 
 router.route('/')
 .get(function (req, res, next){	  
-	res.render('upload', { title: 'hello'});
+	return res.render('upload', { title: 'hello'});
 })
 .post(upload.single('file'),function(req, res, next) {
 //拼接文件上传后的网络路径，
     var url = 'http://' + req.headers.host + '/upload/' + req.file.originalname;
     //将其发回客户端
-    res.json({
+    return res.json({
         code : 1,
         data : url
     });
-    res.end();
 });
 
 router.route('/mul')
 .get(function (req, res, next){	  
-	res.render('uploadmul', { title: 'hello'});
+	return res.render('uploadmul', { title: 'hello'});
 })
 .post([commonUtil.jsonHeader], function(req, res, next) {
     uploadModel.mulUpload(req, res,function(data){
         if(data.status === 200){
             (async ()=>{
                 var dataTemp = {
-                  "code": 200,
-                  "messgae": "上传成功!"
+                  "status": 200,
+                  "message": "上传成功!"
                 }
                 
                 var userCode = commonUtil.replaceKuo(data.fields.userCode);
@@ -80,20 +79,20 @@ router.route('/mul')
                 await db.INSERT('photopool', obj,'');
 
                 dataTemp.photoCode = photoCode;
-                res.json(dataTemp);
+                return res.json(dataTemp);
             })();
         }else{
-            res.json({"code": 0,"messgae":'上传失败!'});
+            return res.json({"status": 0,"message":'上传失败!文件大小限制'});
         }
     });
 });
 router.route('/for')
 .get(function (req, res, next){	  
-	res.render('uploadfor', { title: 'hello'});
+	return res.render('uploadfor', { title: 'hello'});
 })
 .post(function(req, res, next) {
 	uploadModel.forUpload(req, res, function(data){
-    	res.json({status: 200,content:'上传成功！',data:data});
+    	return res.json({status: 200,content:'上传成功！',data:data});
     });
 });
 
@@ -101,7 +100,7 @@ router.route('/list')
 .get(async function (req, res, next){	  
 	var findInfo = {};
 	// var data = await dbLib.mFindLike(picPoolModel,findInfo);
-	res.json({status: 200, message: "success", data: 'data'});
+	return res.json({status: 200, message: "success", data: 'data'});
 })
 
 module.exports = router;

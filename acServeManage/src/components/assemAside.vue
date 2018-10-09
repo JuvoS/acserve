@@ -23,7 +23,7 @@ export default {
           }]
         },{
           label: '设备管理',
-          url: '/device/list',
+          url: '',
           children: [{
             label: '品牌管理',
           	url: '/device/brand'
@@ -46,23 +46,6 @@ export default {
           }, {
             label: '管理订单',
             url: '/bill/list'
-          }]
-        },{
-          label: '问答管理',
-          url: '',
-          children: [{
-            label: '新增问答',
-            url: '/question/create'
-          }, {
-            label: '管理订单',
-            url: '/question/list'
-          }]
-        },{
-          label: '模块控制',
-          url: '',
-          children: [{
-            label: '管理模块',
-            url: '/module/list'
           }]
         }],
         defaultProps: {
@@ -91,6 +74,24 @@ export default {
   },
   mounted: function(){
 //		this.getMenuInfo();
+		var labelTemp = [{
+      label: '问答管理',
+      url: '',
+      children: [{
+        label: '新增问答',
+        url: '/question/create'
+      }, {
+        label: '管理订单',
+        url: '/question/list'
+      }]
+    },{
+      label: '模块控制',
+      url: '',
+      children: [{
+        label: '管理模块',
+        url: '/module/list'
+      }]
+    }]
   }
   
 }
