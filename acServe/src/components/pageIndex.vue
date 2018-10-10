@@ -12,7 +12,8 @@
 		  <div class="adver-panel">
   			<img src="../../../acServeManage/static/img/header.jpg" />
   		</div>
-  		<ass-Menu-Grid class="grid-panel-c" v-show="gridFlag"></ass-Menu-Grid>
+  		<ass-Menu-Grid class="grid-panel-c" v-show="customFlag"></ass-Menu-Grid>
+  		<ass-Menu-GridServe class="grid-panel-c" v-show="serveFlag"></ass-Menu-GridServe>
 	  	<el-main>
 		  	<ass-Menu-Serve v-show="serveFlag"></ass-Menu-Serve>
 				<ass-Menu v-show="customFlag"></ass-Menu>
@@ -28,15 +29,12 @@ export default {
   data () {
     return {
       serveFlag: true,
-      customFlag: true,
-      gridFlag: true
+      customFlag: true
     }
   },
   methods: {
     checkPersonType: function(){
-    	console.log('ss');
     	this.$axios.get(this.$localUrl + 'manage/checkPerson/'+sessionStorage.userCode).then((response) => {
-				console.log(response.data);
 				this.serveFlag = response.data.serveFlag;
 				this.customFlag = response.data.customFlag;
 			}).catch((err) => {
@@ -51,7 +49,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1, h2 {
   font-weight: normal;

@@ -141,6 +141,21 @@ var findAll = ( table, where, order='createTime', sort='desc', params = '')=>{
     var sql="SELECT * FROM "+databaseConfig.prefix+table+' '+_WHERE+' ORDER BY '+order+' '+sort;
     return sqlDo( sql, params);
 }
+var groupBy = ( table, where, fields='*', groupName, order='createTime', sort='desc', params = '')=>{
+    var _WHERE='';
+    if(util.isObject(where)){
+        _WHERE+='WHERE ';
+        for(var k in where){
+            _WHERE+=k+"='"+where[k]+"' AND ";
+        }
+      
+        _WHERE=_WHERE.slice(0,-4);
+    }else if(typeof where =='string' && !commonUtil.isEmpty(where)){
+        _WHERE='WHERE '+where;
+    }
+    var sql="SELECT "+fields+" FROM "+databaseConfig.prefix+table+' '+_WHERE+' GROUP BY '+groupName+' ORDER BY '+order+' '+sort;
+    return sqlDo( sql, params);
+}
 var countAll = ( table, where, order='createTime', sort='desc', params = '')=>{
     var _WHERE='';
     if(util.isObject(where)){
@@ -231,5 +246,6 @@ module.exports = {
     DELETE  : del,
     FindAll : findAll,
     PAGE    : page,
-    COUNT   : countAll   
+    COUNT   : countAll,
+    GROUPBY : groupBy  
 }

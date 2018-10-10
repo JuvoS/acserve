@@ -9,6 +9,7 @@ import assImgup from '@/components/assemImgUp'
 import assMenu from '@/components/assemMenu'
 import assMenuServe from '@/components/assemMenuServe'
 import assemMenuGrid from '@/components/assemMenuGrid'
+import assemMenuGridServe from '@/components/assemMenuGridServe'
 import assBillList from '@/components/assemBillList'
 import assBillServe from '@/components/assemBillServe'
 
@@ -20,16 +21,8 @@ import addressListPage from '@/components/pageAddressList'
 import billCreatePage from '@/components/pageBillCreate'
 import billListPage from '@/components/pageBillList'
 import billListServe from '@/components/pageBillServe'
-
-import formPage from '@/components/zform'
-import HelloWorld from '@/components/zHelloWorld'
-import zloginPage from '@/components/zloginPage'
-import ztokenPage from '@/components/ztokenPage'
-import zuploadPaga from '@/components/zuploadPaga'
-import zuploadPage from '@/components/zuploadPage'
-import zaddressPage from '@/components/zaddress'
-import zchildPage from '@/components/zchild'
-import zchparentPage from '@/components/zchparent'
+import devicePage from '@/components/pageDevice'
+import userPage from '@/components/pageUser'
 
 Vue.use(Router)
 Vue.component('ass-Header',assHeader);
@@ -38,11 +31,11 @@ Vue.component('ass-Navbtn',assNavBtn);
 Vue.component('ass-Menu',assMenu);
 Vue.component('ass-Menu-Serve',assMenuServe);
 Vue.component('ass-Menu-Grid',assemMenuGrid);
+Vue.component('ass-Menu-GridServe',assemMenuGridServe);
 Vue.component('ass-adrlist',assAdrlist);
 Vue.component('ass-imgup',assImgup);
 Vue.component('ass-billlist',assBillList);
 Vue.component('ass-billserve',assBillServe);
-Vue.component('zchild',zchildPage);
 
 export default new Router({
   routes: [
@@ -61,14 +54,6 @@ export default new Router({
       path: '/reg',
       name: 'register',
       component: regPage
-    },{
-      path: '/hello',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },{
-      path: '/form',
-      name: 'form',
-      component: formPage
     },{
       path: '/addresslist',
       name: 'addresslist',
@@ -118,29 +103,13 @@ export default new Router({
     	name: 'waitBill',
     	component: billListServe
     },{
-      path: '/zlogin',
-      name: 'zlogin',
-      component: zloginPage
+    	path: '/device',
+    	name: 'device',
+    	component: devicePage
     },{
-      path: '/ztoken',
-      name: 'ztoken',
-      component: ztokenPage
-    },{
-      path: '/zups',
-      name: 'zups',
-      component: zuploadPaga
-    },{
-      path: '/zupload',
-      name: 'zupload',
-      component: zuploadPage
-    },{
-      path: '/zaddress',
-      name: 'zadd',
-      component: zaddressPage
-    },{
-      path: '/zchp',
-      name: 'zchp',
-      component: zchparentPage
+    	path: '/user',
+    	name: 'user',
+    	component: userPage
     },{
       path: "*",
       redirect: "/404"

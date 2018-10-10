@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view ></router-view>
+    <router-view class="app-panel"></router-view>
   </div>
 </template>
 
@@ -10,10 +10,12 @@ export default {
   methods: {
   	checkTokenState: function(){
   		if(this.$route.path != '/login' && (this.$route.path!= '/reg')){
+  			console.log(sessionStorage.accessToken);
+  			if(this.isStrEmpty(sessionStorage.accessToken)) return this.$router.push('/login');
 	  		this.$axios.get(this.$localUrl + 'entry/checkToken?token='+sessionStorage.accessToken).then((response) => {
 					var temp = response.data;
 					if(temp.code != 200){
-						this.$router.push('/login');
+						return this.$router.push('/login');
 					}
 				}).catch((err) => {
 					console.log(err);
@@ -44,5 +46,14 @@ html,body {
 	margin: 0;
 	padding: 0;
 	background: #f7f7f7;
+}
+.el-header {
+	position: fixed;
+	top: 0;
+	height: 3rem;
+	width: 100%;
+}
+.app-panel {
+	margin-top: 3rem;
 }
 </style>

@@ -53,29 +53,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-.header-pp {
-	height: 5rem;
-}
 .menu-panel {
 	/*min-height: 17rem;*/
 	width: 94%;
 	background: #FFFFFF;
 	margin: 0 auto;
-	margin-top: 2rem;
 	border-radius: 10px;
 	font-size: 12px;
 	overflow: hidden;

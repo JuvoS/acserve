@@ -1,6 +1,6 @@
 <template>
   <div>
-  	<el-header style="margin-bottom: -10px;">
+  	<el-header>
 	  	<ass-Header class="header-panel"></ass-Header>
 	  </el-header>
 		<div class="address-list-panel">
@@ -228,6 +228,7 @@ export default {
 	.address-list-panel {
 		width: 100%;
 		min-height: 100%;
+		padding-top: 0.1rem;
 	}
 	.address-list-panel ul{
 		list-style: none;

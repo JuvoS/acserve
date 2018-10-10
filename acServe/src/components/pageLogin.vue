@@ -36,8 +36,10 @@ export default {
     return {
       msg: 'Welcome to AC',
       loginForm: {
-      	usertel: '01213456789',
-      	userpass: '132'
+//    	usertel: '01213456789',
+//    	userpass: '132'
+				usertel: '17852600214',
+      	userpass: '123'
       },
       rules: {
       	usertel: [{required: true,message: '请填写手机号',trigger: 'blur'},
@@ -58,7 +60,6 @@ export default {
 						transformRequest: [function(data) {return JSON.stringify(dataForm);}]
 					}).then((response) => {
 						var dataTemp = response.data;
-						console.log(dataTemp);
 						if(dataTemp.code == 200 && dataTemp.token){
 							sessionStorage.userCode = response.data.userCode;
 							sessionStorage.accessToken = response.data.token;

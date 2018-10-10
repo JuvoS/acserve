@@ -58,28 +58,6 @@ export default {
   },
   methods: {
     registerNow(){
-//    this.$refs['loginForm'].validate((valid) => {
-//				if(valid) {
-//					var dataForm = this.loginForm;
-//					this.$axios.post(this.$localUrl + 'entry/login', dataForm, {
-//						transformRequest: [function(data) {return JSON.stringify(dataForm);}]
-//					}).then((response) => {
-//						var dataTemp = response.data;
-//						console.log(dataTemp);
-//						if(dataTemp.code == 200 && dataTemp.token){
-//							sessionStorage.accessToken = response.data.token;
-//							this.$router.push('/index');
-//						}else{
-//							this.open(dataTemp.message);
-//						}
-//					}).catch((err) => {
-//						console.log(err);
-//					});
-//				} else {
-//					alert();
-//					return false;
-//				}
-//			});
 			if(this.checkForm()){
 				this.loading = true;
 				

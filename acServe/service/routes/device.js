@@ -45,6 +45,11 @@ router.post('/create/:deName', [commonUtil.jsonHeader], function(req, res, next)
       delete obj.serveCode;
       await db.INSERT('detime', { name: obj.name, createTime: createTime, updateTime:updateTime },'');
     }
+    if(req.params.deName == 'user'){
+      obj.createTime = dateLib.getTimeStamp();
+      obj.updateTime = dateLib.getTimeStamp(); 
+      await db.INSERT('demodeluser', obj,'');
+    }
 
     return res.json(data);
   })();
@@ -87,20 +92,19 @@ router.get('/alllist/:deName', [commonUtil.jsonHeader], function(req, res, next)
   (async ()=>{
     let s;
     if(req.params.deName == 'brand'){
-      countNum = await db.COUNT('debrand','');
       s = await db.FindAll('debrand','');
     }
     if(req.params.deName == 'mold'){
-      countNum = await db.COUNT('demold','');
       s = await db.FindAll('demold','');
     }
     if(req.params.deName == 'model'){
-      countNum = await db.COUNT('demodel','');
       s = await db.FindAll('demodel','');
     }
     if(req.params.deName == 'time'){
-      countNum = await db.COUNT('detime','');
       s = await db.FindAll('detime','');
+    }
+    if(req.params.deName == 'modelUser'){
+      s = await db.FindAll('demodeluser','');
     }
     
     var data = s;
@@ -145,6 +149,9 @@ router.post('/edit/:deName', [commonUtil.jsonHeader], function(req, res, next) {
       delete obj.serveCode;
       await db.UPDATE('detime', { name: obj.name, updateTime:updateTime }, { Id: obj.Id },'');
     }
+    if(req.params.deName == 'user'){
+      await db.UPDATE('demodeluser', obj, { Id: obj.Id },'');
+    }
 
     return res.json(data);
   })();
@@ -186,10 +193,35 @@ router.post('/del/:deName', [commonUtil.jsonHeader], function(req, res, next) {
       delete obj.serveCode;
       await db.DELETE('detime', { Id: obj.Id },'');
     }
+    if(req.params.deName == 'user'){
+      await db.INSERT('userservelog', { userCode: obj.userCode,  did: '删除型号'+obj.Id+'名为：'+obj.name, createTime: createTime, updateTime:updateTime },'');
+      await db.DELETE('demodeluser', { Id: obj.Id },'');
+    }
 
     return res.json(data);
   })();
   
+});
+/**
+ * 获取型号级联数据
+ */
+router.get('/modelGet', [commonUtil.jsonHeader], function(req, res, next) {
+  (async ()=>{
+    let s= await db.FindAll('demodel','');
+    
+    var data = s;
+    return res.json(data);
+  })();
+
+});
+router.get('/list/modelUser/:userCode', [commonUtil.jsonHeader], function(req, res, next) {
+  (async ()=>{
+    let s= await db.FindAll('demodeluser',{ userCode: req.params.userCode });
+    
+    var data = s;
+    return res.json(data);
+  })();
+
 });
 
 module.exports = router;

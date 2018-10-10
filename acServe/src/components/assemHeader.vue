@@ -9,7 +9,14 @@
 			  	</div>
 			  	</router-link>
 			  </el-col>
-			  <el-col :span="3" :offset="12">
+			  <el-col :span="3" :offset="9">
+			  	<router-link to="/device">
+			  	<div class="header-panel">
+			  		<i class="el-icon-info"></i>
+			  	</div>
+			  	</router-link>
+			  </el-col>
+			  <el-col :span="3">
 			  	<router-link to="/addresslist">
 			  	<div class="header-panel">
 			  		<i class="el-icon-location"></i>
@@ -17,9 +24,11 @@
 			  	</router-link>
 			  </el-col>
 			  <el-col :span="5">
+			  	<router-link to="/user">
 			  	<div class="header-panel">
 			  		<img src="../../static/img/logo.png" />
 			  	</div>
+			  	</router-link>
 			  </el-col>
 			</el-row>
     </div>

@@ -5,7 +5,9 @@
     		<img src="../assets/logo.png">
     	</div>
     	<div class="header-content">
-    		<div class="header-content-panel"></div>
+    		<div class="header-content-panel">
+    			<el-button @click="logOut">退出</el-button>
+    		</div>
     		<div class="header-user">
     			<img src="../../static/img/header.jpg" />
     		</div>
@@ -29,6 +31,11 @@ export default {
 			if(pathTemp[1] == 'reg') return this.headerFlag = false;
 			
 			return this.headerFlag = true;
+  	},
+  	logOut: function(){
+  		sessionStorage.userCode = '';
+			sessionStorage.accessToken = '';
+			window.location.reload();
   	}
   },
   mounted: function(){

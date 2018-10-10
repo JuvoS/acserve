@@ -62,7 +62,9 @@ export default {
 						if(dataTemp.code == 200 && dataTemp.token){
 							sessionStorage.userCode = response.data.userCode;
 							sessionStorage.accessToken = response.data.token;
+							sessionStorage.headerFlag = true;
 							this.$router.push('/index');
+							window.location.reload();
 						}else{
 							this.open(dataTemp.message);
 						}
