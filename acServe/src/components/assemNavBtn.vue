@@ -1,8 +1,8 @@
 <template>
-  <div class="navBtnPage">
-    <div class="nav-box">
-	    <div class="nav-box-item" v-for="item in menu" >
-	    	<i class="el-icon-menu" v-bind:class="item.icon" @click="menuLink(item.info)"></i>
+  <div class="grid-panel">
+    <div class="grid-wrapper">
+	    <div class="grid-item" v-for="(item,index) in menu" :key="index" @click="menuLink(item.info,index)">
+	    	<span v-bind:class="{ active: item.isActive }">{{ item.name }}</span>
 	    </div>
     </div>
   </div>
@@ -13,60 +13,24 @@ export default {
   name: 'navBtnPage',
   data () {
     return {
-      menu: [{
-      	demandFlag: 0,
-      	name: '完全删除',
-      	info: 'del',
-      	num: 0
-      },{
-      	demandFlag: 200,
-      	name: '待接单',
-      	info: 'wait',
-      	num: 0
-      },{
-      	demandFlag: 201,
-      	name: '已接单',
-      	info: 'serve',
-      	num: 0
-      },{
-      	demandFlag: 203,
-      	name: '待评价',
-      	info: 'eval',
-      	num: 0
-      },{
-      	demandFlag: 204,
-      	name: '已评价',
-      	info: 'evaled',
-      	num: 0
-      },{
-      	demandFlag: 100,
-      	name: '异常订单',
-      	info: 'abno',
-      	num: 0
-      },{
-      	demandFlag: 101,
-      	name: '已取消',
-      	info: 'cancel',
-      	num: 0
-      },{
-      	demandFlag: 102,
-      	name: '草稿',
-      	info: 'draft',
-      	num: 0
-      }]
+      menu: []
     }
   },
   methods:{
   	getMenuInfo(){
     	this.$axios.get(this.$localUrl + 'bill/menu?code='+sessionStorage.userCode).then((response) => {
 				this.menu = response.data.menu;
+				this.menu[0].isActive = true;
 			}).catch((err) => {
 				console.log(err);
 			});
     },
-    menuLink(val){
+    menuLink(val,index){
+			for(var i=0;i<this.menu.length;i++){
+				this.menu[i].isActive = false;
+			}
+    	this.menu[index].isActive = true;
     	this.$emit('getBillList',val);
-    	this.$router.push('/bill/list/'+val);
     }
   },
   mounted: function(){
@@ -76,22 +40,28 @@ export default {
 </script>
 
 <style scoped>
-.navBtnPage {
-	height: 2rem;
-	line-height: 2rem;
+.grid-panel {
 	width: 100%;
+	margin: 0 auto;
+	font-size: 12px;
+	overflow: hidden;
+	overflow-y: hidden;
+}
+.grid-wrapper {
+	display: grid;
+	grid-template-columns: 25% 25% 25% 25%;
+}
+.grid-item {
 	background: #FFFFFF;
-	margin: 0;
-}
-.nav-box {
-	width: 100%;
+	margin: 1px;
+	height: calc(2rem - 1px);
+	line-height: 1.9rem;
 	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-}
-.nav-box-item {
-	height: 2rem;
-	line-height: 2rem;
+	flex-direction: column;
+	justify-content: center;
 	text-align: center;
+}
+.active {
+	color: #409EFF;
 }
 </style>

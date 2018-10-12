@@ -61,12 +61,14 @@ router.post('/login', [commonUtil.jsonHeader], function(req, res, next) {
     var telFlag = await db.FindOne('user',{
       'userTel': obj.usertel
     });
-    var data;
+    // var data = {"code": 101,"message": "未知原因，登录失败!"};
     if(commonUtil.isEmpty(telFlag)) {
-      data = {"code": 101,"message": "该手机号未注册，登录失败!"}
-    }else if(telFlag[0].userTypeCode != 101){
-      data = {"code": 101,"message": "该账号无权限，登录失败!"}
-    }else if(obj.userpass == telFlag[0].userPass){
+      res.json({"code": 101,"message": "该手机号未注册，登录失败!"});
+    }
+    if(telFlag[0].userTypeCode != 101){
+      res.json({"code": 101,"message": "该账号无权限，登录失败!"});
+    }
+    if(obj.userpass == telFlag[0].userPass){
       var userToken = tokenLib.createToken({
         userCode: telFlag[0].userCode
       },600)
@@ -78,14 +80,13 @@ router.post('/login', [commonUtil.jsonHeader], function(req, res, next) {
         'updateTime': dateLib.getTimeStamp()
       });
       
-      data = {
+      res.json({
         "code": 200,
         "message": "登录成功!",
         "token": userToken,
         "userCode": telFlag[0].userCode
-      }
+      });
     }
-    res.json(data);
   })();
 });
 router.get('/checkToken', [commonUtil.jsonHeader], function(req, res, next) {

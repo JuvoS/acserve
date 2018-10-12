@@ -4,8 +4,11 @@
 	  	<ass-Header class="header-panel"></ass-Header>
 		</el-header>
 		<div class="mine-panel">
-			<div class="mine-item">
-				<a class="mine-logout" @click="logout">退出当前账号</a>
+			<div class="mine-item" @click="menuLink('/suggest')">
+				<a class="mine-suggest">建议列表</a>
+			</div>
+			<div class="mine-item" @click="logout">
+				<a class="mine-logout">退出当前账号</a>
 			</div>
 		</div>
 		
@@ -25,7 +28,10 @@ export default {
   		sessionStorage.userCode = '';
 			sessionStorage.accessToken = '';
 			window.location.reload();
-  	}
+  	},
+  	menuLink: function(val){
+			this.$router.push(val);
+    }
   },
   mounted: function(){	
 
@@ -54,5 +60,8 @@ export default {
 }
 .mine-logout {
 	color: #FF9800;
+}
+.mine-suggest {
+	
 }
 </style>

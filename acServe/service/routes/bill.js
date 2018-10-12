@@ -124,6 +124,7 @@ router.get('/menu', [commonUtil.jsonHeader], function(req, res, next) {
         });
       }
       menuTemp[item].num = num[0]['count(*)'];
+      menuTemp[item].isActive = false;
       menuList.push(menuTemp[item]);
     }
     data.menu = menuList;

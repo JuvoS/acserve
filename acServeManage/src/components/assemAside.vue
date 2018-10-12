@@ -39,6 +39,9 @@ export default {
           },{
           	label: '服务期管理',
           	url: '/device/time'
+          },{
+          	label: '用户型号',
+          	url: '/device/user'
           }]
         },{
           label: '订单管理',
@@ -49,6 +52,13 @@ export default {
           }, {
             label: '管理订单',
             url: '/bill/list'
+          }]
+        },{
+          label: '投诉建议',
+          url: '',
+          children: [{
+            label: '管理建议',
+            url: '/suggest'
           }]
         }],
         defaultProps: {

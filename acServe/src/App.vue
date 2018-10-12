@@ -52,6 +52,7 @@ html,body {
 	top: 0;
 	height: 3rem;
 	width: 100%;
+	z-index: 8;
 }
 .app-panel {
 	margin-top: 3rem;

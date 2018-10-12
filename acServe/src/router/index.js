@@ -23,6 +23,7 @@ import billListPage from '@/components/pageBillList'
 import billListServe from '@/components/pageBillServe'
 import devicePage from '@/components/pageDevice'
 import userPage from '@/components/pageUser'
+import suggestPage from '@/components/pageSuggest'
 
 Vue.use(Router)
 Vue.component('ass-Header',assHeader);
@@ -67,37 +68,9 @@ export default new Router({
     	name: 'billListAll',
     	component: billListPage
     },{
-    	path: '/bill/list/wait',
-    	name: 'billListWait',
-    	component: billListPage
-    },{
-    	path: '/bill/list/serve',
-    	name: 'billListServe',
-    	component: billListPage
-    },{
-    	path: '/bill/list/eval',
-    	name: 'billListEval',
-    	component: billListPage
-    },{
-    	path: '/bill/list/evaled',
-    	name: 'billListEvaled',
-    	component: billListPage
-    },{
-    	path: '/bill/list/abno',
-    	name: 'billListAbno',
-    	component: billListPage
-    },{
-    	path: '/bill/list/cancel',
-    	name: 'billListCancel',
-    	component: billListPage
-    },{
-    	path: '/bill/list/draft',
-    	name: 'billListDraft',
-    	component: billListPage
-    },{
-    	path: '/bill/list/del',
-    	name: 'billListDel',
-    	component: billListPage
+    	path: '/suggest',
+    	name: 'suggest',
+    	component: suggestPage
     },{
     	path: '/serve/wait',
     	name: 'waitBill',

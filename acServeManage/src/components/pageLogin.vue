@@ -54,6 +54,7 @@ export default {
       this.$refs['loginForm'].validate((valid) => {
 				if(valid) {
 					var dataForm = this.loginForm;
+					console.log(dataForm);
 					this.$axios.post(this.$localUrl + 'manage/login', dataForm, {
 						transformRequest: [function(data) {return JSON.stringify(dataForm);}]
 					}).then((response) => {

@@ -1,6 +1,6 @@
 <template>
 	<div class="formPage">
-		<el-header style="margin-bottom: -10px;">
+		<el-header>
 		  	<ass-Header class="header-panel"></ass-Header>
 		</el-header>
 		<div class="bill-c-panel">
@@ -139,6 +139,7 @@
 }
 .bill-c-panel {
 	width: 100%;
+	margin-top: 3.4rem;
 }
 .bill-panel {
 	width: 96%;

@@ -15,8 +15,8 @@
   		<ass-Menu-Grid class="grid-panel-c" v-show="customFlag"></ass-Menu-Grid>
   		<ass-Menu-GridServe class="grid-panel-c" v-show="serveFlag"></ass-Menu-GridServe>
 	  	<el-main>
-		  	<ass-Menu-Serve v-show="serveFlag"></ass-Menu-Serve>
-				<ass-Menu v-show="customFlag"></ass-Menu>
+		  	<ass-Menu-Serve v-show="currentFlag"></ass-Menu-Serve>
+				<ass-Menu v-show="currentFlag"></ass-Menu>
 		    <ass-Footer></ass-Footer>
 	  	</el-main>
 		</el-container>
@@ -28,8 +28,9 @@ export default {
   name: 'index',
   data () {
     return {
-      serveFlag: true,
-      customFlag: true
+      serveFlag: false,
+      customFlag: false,
+      currentFlag: false
     }
   },
   methods: {

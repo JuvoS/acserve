@@ -1,10 +1,10 @@
 <template>
 	<div class="billList">
-		<el-header style="margin-bottom: -10px;">
+		<el-header>
 			<ass-Header class="header-panel"></ass-Header>
 		</el-header>
 
-		<ass-Navbtn v-on:getBillList="getBillList"></ass-Navbtn>
+		<ass-Navbtn class="nav-panel" v-on:getBillList="getBillList"></ass-Navbtn>
 		<div class="bill-c-panel">
 			<div class="bill-panel">
 				<el-collapse accordion>
@@ -84,6 +84,9 @@
 		},
 		mounted: function() {
 			var pathTemp = this.$route.path.split('/');
+			if(this.isStrEmpty(pathTemp[3])){
+				pathTemp[3] = 'all';
+			}
 			this.getBillList(pathTemp[3]);
 		}
 	}
@@ -99,8 +102,14 @@
 	
 	.bill-c-panel {
 		width: 100%;
+		margin-top: 7.6rem;
 	}
-	
+	.nav-panel {
+		position: fixed;
+		top: 3rem;
+		background: #F7F7F7;
+		z-index: 8;
+	}
 	.bill-panel {
 		width: 96%;
 		min-height: 300px;
@@ -158,13 +167,22 @@
 		justify-content: center;
 		height: 100px;
 		width: 80%;
+		font-size: 10px;
 	}
 	
 	.bill-list-item-box-content .title {
 		font-size: 16px;
 		width: 90%;
-		height: 60px;
-		line-height: 50px;
+		height: 50px;
+		line-height: 45px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.bill-list-item-box-content .address {
+		width: 90%;
+		height: 20px;
+		line-height: 20px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;

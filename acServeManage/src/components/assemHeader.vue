@@ -38,6 +38,9 @@ export default {
 			window.location.reload();
   	}
   },
+  watch: {
+  	'$route': 'checkLoginPage'
+  },
   mounted: function(){
   	this.checkLoginPage();
   }

@@ -14,8 +14,10 @@ var addressRouter = require('./routes/address');
 var billRouter = require('./routes/bill');
 var billServeRouter = require('./routes/billserve');
 var deviceRouter = require('./routes/device');
+var suggestRouter = require('./routes/suggest');
 
 var manageRouter = require('./routes/manage');
+var smsRouter = require('./routes/sms');
 
 var app = express();
 
@@ -38,8 +40,10 @@ app.use('/address', addressRouter);
 app.use('/bill', billRouter);
 app.use('/billServe', billServeRouter);
 app.use('/device', deviceRouter);
+app.use('/suggest', suggestRouter);
 
 app.use('/manage', manageRouter);
+app.use('/sms', smsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

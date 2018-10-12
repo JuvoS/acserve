@@ -15,7 +15,9 @@ import deviceListPage from '@/components/pageDeviceList'
 import deviceBrandPage from '@/components/pageDeviceBrand'
 import deviceMoldPage from '@/components/pageDeviceMold'
 import deviceModelPage from '@/components/pageDeviceModel'
+import deviceModelUserPage from '@/components/pageDeviceModelUser'
 import deviceTimePage from '@/components/pageDeviceTime'
+import suggestPage from '@/components/pageSuggest'
 
 import assNavBtn from '@/components/assemNavBtn'
 import assAdrlist from '@/components/assemAddressList'
@@ -110,6 +112,10 @@ export default new Router({
     	name: 'deviceTime',
     	component: deviceTimePage
     },{
+    	path: '/device/user/',
+    	name: 'deviceModelUser',
+    	component: deviceModelUserPage
+    },{
     	path: '/question/create',
     	name: 'questionCreate',
     	component: billCreatePage
@@ -121,6 +127,10 @@ export default new Router({
     	path: '/module/list/',
     	name: 'moduleListAll',
     	component: billListPage
+    },{
+    	path: '/suggest',
+    	name: 'suggest',
+    	component: suggestPage
     },{
       path: "*",
       redirect: "/404"

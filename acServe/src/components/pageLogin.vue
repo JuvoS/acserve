@@ -36,10 +36,10 @@ export default {
     return {
       msg: 'Welcome to AC',
       loginForm: {
-//    	usertel: '01213456789',
-//    	userpass: '132'
-				usertel: '17852600214',
-      	userpass: '123'
+      	usertel: '01213456789',
+      	userpass: '132'
+//			usertel: '17852600214',
+//    	userpass: '123'
       },
       rules: {
       	usertel: [{required: true,message: '请填写手机号',trigger: 'blur'},
