@@ -247,5 +247,255 @@ router.get('/list/:billStatus/:pageIndex/:pageSizeNum', [commonUtil.jsonHeader],
   return res.json(data);
 
 });
+router.get('/getone/:demandCode', [commonUtil.jsonHeader], async (req, res, next)=> {
+
+  var demandFindObj = {demandCode: req.params.demandCode};
+  
+  let data = await db.FindOne('demand', demandFindObj,'createTime','desc');
+  var list = [];
+  for(var item in data){
+    let addressTemp = await db.FindAll('address', {addressCode:data[item].addressCode},'createTime','desc');
+    
+    var t = {
+      demandCode: data[item].demandCode,
+      type: commonUtil.changeTypeFromNum(data[item].demandFlag),
+      describetion: data[item].describetion,
+      supplyInfo: data[item].supplyInfo,
+      address:{
+        info: addressTemp[0].info,
+        tel: addressTemp[0].tel
+      },
+      showImg: '',
+      img: ''
+    }
+
+    let imgTemp;
+    if(data[item].photoCode!='1111'){
+      imgTemp = await db.FindAll('photopool', {photoCode:data[item].photoCode},'createTime','desc');
+      t.img = imgTemp;
+      t.showImg = imgTemp[0].photoUrl;
+    }
+    
+    list.push(t);
+  }
+  return res.json(list);
+
+});
+router.get('/getuser', [commonUtil.jsonHeader], async (req, res, next)=> {
+
+  var userFindObj = {userTypeCode: 101};
+  let userTemp = await db.FindAll('user', userFindObj,'createTime','desc');
+
+  return res.json(userTemp);
+
+});
+router.post('/assign', [commonUtil.jsonHeader], function(req, res, next) {
+  (async ()=>{
+    var obj = JSON.parse(JSON.stringify(req.body));
+    for( var k in obj){
+      obj = k;
+    }
+    obj = JSON.parse(obj);
+    
+    var data = {
+      "code": 200,
+      "message": "指派成功!"
+    }
+    
+    var createTime = dateLib.getTimeStamp();
+    var updateTime = dateLib.getTimeStamp();
+
+      obj.updateTime = dateLib.getTimeStamp();
+      obj.demandFlag = 201;
+      await db.INSERT('userservelog', { userCode: obj.serveCode,  did: '派遣'+obj.Id+'为：'+JSON.stringify(obj), createTime: createTime, updateTime:updateTime },'');
+      delete obj.serveCode;
+      await db.UPDATE('demand', obj, { demandCode: obj.demandCode },'');
+
+    return res.json(data);
+  })();
+  
+});
+
+router.post('/edit', [commonUtil.jsonHeader], function(req, res, next) {
+  (async ()=>{
+    var obj = JSON.parse(JSON.stringify(req.body));
+    for( var k in obj){
+      obj = k;
+    }
+    obj = JSON.parse(obj);
+    
+    var data = {
+      "code": 0,
+      "message": "修改失败，须指派维修人员!"
+    }
+    if(obj.demandFlag != 201){
+      var createTime = dateLib.getTimeStamp();
+      var updateTime = dateLib.getTimeStamp();
+  
+      obj.updateTime = dateLib.getTimeStamp();
+      await db.INSERT('userservelog', { userCode: obj.serveCode,  did: '修改订单'+obj.Id+'为：'+JSON.stringify(obj), createTime: createTime, updateTime:updateTime },'');
+      delete obj.serveCode;
+      console.log(obj);
+      await db.UPDATE('demand', obj, { demandCode: obj.demandCode },'');
+
+      data = {
+        "code": 200,
+        "message": "修改成功!"
+      }
+    }
+
+    return res.json(data);
+  })();
+  
+});
+router.post('/del', [commonUtil.jsonHeader], function(req, res, next) {
+  (async ()=>{
+    var obj = JSON.parse(JSON.stringify(req.body));
+    for( var k in obj){
+      obj = k;
+    }
+    obj = JSON.parse(obj);
+    
+    var data = {
+      "code": 200,
+      "message": "删除成功!",
+      'data': obj
+    }
+    
+    var createTime = dateLib.getTimeStamp();
+    var updateTime = dateLib.getTimeStamp();
+
+      await db.INSERT('userservelog', { userCode: obj.serveCode,  did: '删除订单'+obj.Id+'名为：'+obj.name, createTime: createTime, updateTime:updateTime },'');
+      delete obj.serveCode;
+      await db.DELETE('demand', { Id: obj.Id },'');
+
+
+    return res.json(data);
+  })();
+  
+});
+
+router.get('/assignList', [commonUtil.jsonHeader], async (req, res, next)=> {
+
+  var temp = req.query.code;
+  var type = req.query.type;
+
+  var demandFindObj = {repairCode: temp,demandFlag:201};
+
+  let data = await db.FindAll('demand', demandFindObj,'createTime','desc');
+  var list = [];
+  for(var item in data){
+    let addressTemp = await db.FindAll('address', {addressCode:data[item].addressCode},'createTime','desc');
+    
+    var t = {
+      demandCode: data[item].demandCode,
+      type: commonUtil.changeTypeFromNum(data[item].demandFlag),
+      typeNum: data[item].demandFlag,
+      describetion: data[item].describetion,
+      supplyInfo: data[item].supplyInfo,
+      address:{
+        info: addressTemp[0].info,
+        tel: addressTemp[0].tel
+      },
+      showImg: '',
+      img: ''
+    }
+
+    let imgTemp;
+    if(data[item].photoCode!='1111'){
+      imgTemp = await db.FindAll('photopool', {photoCode:data[item].photoCode},'createTime','desc');
+      t.img = imgTemp;
+      t.showImg = imgTemp[0].photoUrl;
+    }
+    
+    list.push(t);
+  }
+  return res.json(list);
+
+});
+router.get('/finishList', [commonUtil.jsonHeader], async (req, res, next)=> {
+
+  var temp = req.query.code;
+  var type = req.query.type;
+
+  var demandFindObj = {repairCode: temp,demandFlag:203};
+
+  let data = await db.FindAll('demand', demandFindObj,'createTime','desc');
+  var list = [];
+  for(var item in data){
+    let addressTemp = await db.FindAll('address', {addressCode:data[item].addressCode},'createTime','desc');
+    
+    var t = {
+      demandCode: data[item].demandCode,
+      type: commonUtil.changeTypeFromNum(data[item].demandFlag),
+      typeNum: data[item].demandFlag,
+      describetion: data[item].describetion,
+      supplyInfo: data[item].supplyInfo,
+      address:{
+        info: addressTemp[0].info,
+        tel: addressTemp[0].tel
+      },
+      showImg: '',
+      img: ''
+    }
+
+    let imgTemp;
+    if(data[item].photoCode!='1111'){
+      imgTemp = await db.FindAll('photopool', {photoCode:data[item].photoCode},'createTime','desc');
+      t.img = imgTemp;
+      t.showImg = imgTemp[0].photoUrl;
+    }
+    
+    list.push(t);
+  }
+  return res.json(list);
+
+});
+router.post('/do/:type', [commonUtil.jsonHeader], function(req, res, next) {
+  (async ()=>{
+    var obj = JSON.parse(JSON.stringify(req.body));
+    for( var k in obj){
+      obj = k;
+    }
+    obj = JSON.parse(obj);
+    
+    var data = {
+      "code": 0,
+      "message": "完成失败，联系部门主管!"
+    }
+    
+    var createTime = dateLib.getTimeStamp();
+    var updateTime = dateLib.getTimeStamp();
+    if(req.params.type == 'finish'){
+      obj.demandFlag = 203;
+      
+      obj.updateTime = dateLib.getTimeStamp();
+      await db.INSERT('userservelog', { userCode: obj.serveCode,  did: '维修人员操作订单'+obj.Id+'为：'+JSON.stringify(obj), createTime: createTime, updateTime:updateTime },'');
+      delete obj.serveCode;
+      await db.UPDATE('demand', obj, { demandCode: obj.demandCode },'');
+
+      data = {
+        "code": 200,
+        "message": "完成订单!"
+      }
+    }
+    if(req.params.type == 'refuse'){
+      obj.demandFlag = 200;
+
+      obj.updateTime = dateLib.getTimeStamp();
+      await db.INSERT('userservelog', { userCode: obj.serveCode,  did: '维修人员拒接订单'+obj.Id+'为：'+JSON.stringify(obj), createTime: createTime, updateTime:updateTime },'');
+      delete obj.serveCode;
+      await db.UPDATE('demand', obj, { demandCode: obj.demandCode },'');
+
+      data = {
+        "code": 200,
+        "message": "订单已退回!"
+      }
+    }
+
+    return res.json(data);
+  })();
+  
+});
 
 module.exports = router;

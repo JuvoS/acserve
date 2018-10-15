@@ -4,8 +4,7 @@
 			<ass-Header class="header-panel"></ass-Header>
 		</el-header>
 
-		<ass-Navbtn class="nav-panel" v-on:getBillList="getBillList"></ass-Navbtn>
-		<div class="bill-c-panel">
+		<div class="bill-c-panelmm">
 			<div class="bill-panel">
 				<el-collapse accordion>
 					<el-collapse-item v-show="billListFlag">
@@ -40,23 +39,15 @@
 								</el-carousel>
 							</div>
 							<div class="btn-box">
-								<el-button v-show="listitem.typeNum==200" type="primary" round class="bill-btn">接单</el-button>
-								<el-button v-show="listitem.typeNum==201" type="primary" round class="bill-btn">完成</el-button>
-								<el-button v-show="listitem.typeNum==201" round class="bill-btn">拒接</el-button>
-								<el-button v-show="listitem.typeNum==203" type="primary" round class="bill-btn">评价</el-button>
-								
-								<!--<el-button v-show="listitem.typeNum==200" type="primary" round class="bill-btn">修正订单</el-button>
-								<el-button v-show="listitem.typeNum==200||listitem.typeNum==201" round class="bill-btn">取消订单</el-button>
-								<el-button v-show="listitem.typeNum==203" type="primary" round class="bill-btn">评价</el-button>
-								<el-button v-show="listitem.typeNum==102" type="primary" round class="bill-btn">编辑</el-button>-->
+								<el-button @click="evalNow(listitem.demandCode)" v-show="listitem.typeNum==203" type="primary" round class="bill-btn">评价</el-button>
 							</div>
 						</div>
 
 					</el-collapse-item>
-				
 				</el-collapse>
 			</div>
 		</div>
+
 	</div>
 </template>
 
@@ -72,7 +63,7 @@
 		},
 		methods: {
 			getBillList: function(type) {
-				this.$axios.get(this.$localUrl + 'bill/list?code=' + sessionStorage.userCode + '&type=' + type).then((response) => {
+				this.$axios.get(this.$localUrl + 'billserve/finishList?code=' + sessionStorage.userCode + '&type=' + type).then((response) => {
 					var temp = response.data;
 					this.billListFlag = true;
 					if(!this.isOwnEmpty(temp)) this.billListFlag = false;
@@ -80,18 +71,18 @@
 				}).catch((err) => {
 					console.log(err);
 				});
+			},
+			evalNow: function(val){
+				this.$message({ message: '暂未开放评价', type: 'warning' });
 			}
 		},
 		mounted: function() {
 			var pathTemp = this.$route.path.split('/');
-			if(this.isStrEmpty(pathTemp[3])){
-				pathTemp[3] = 'all';
-			}
-			this.getBillList(pathTemp[3]);
+			this.getBillList(pathTemp[2]);
 		}
 	}
 </script>
-<style>
+<style scoped="">
 	.billList {
 		width: 100%;
 	}
@@ -100,16 +91,11 @@
 		padding: 0;
 	}
 	
-	.bill-c-panel {
+	.bill-c-panelmm {
 		width: 100%;
-		margin-top: 7.6rem;
+		padding-top: 0.1rem;
 	}
-	.nav-panel {
-		position: fixed;
-		top: 3rem;
-		background: #F7F7F7;
-		z-index: 8;
-	}
+	
 	.bill-panel {
 		width: 96%;
 		min-height: 300px;
@@ -118,34 +104,7 @@
 		text-align: left;
 	}
 	
-	.el-collapse {
-		background: none;
-		border-top: 0px;
-	}
 	
-	.el-collapse-item {
-		border-radius: 5px;
-		margin: 10px auto;
-		background: #FFFFFF;
-	}
-	
-	.el-collapse-item__header {
-		height: 100px;
-	}
-	
-	.el-collapse-item__arrow {
-		line-height: 30px;
-		font-size: 25px;
-		font-weight: lighter;
-		color: #CCCCCC;
-		margin-top: 35px;
-		margin-right: 10px;
-		width: 6%;
-	}
-	
-	.el-collapse-item__content {
-		padding-bottom: 5px;
-	}
 	
 	.bill-list-item-img {
 		height: 80px;
@@ -167,19 +126,20 @@
 		justify-content: center;
 		height: 100px;
 		width: 80%;
-		font-size: 10px;
 	}
 	
 	.bill-list-item-box-content .title {
 		font-size: 16px;
 		width: 90%;
-		height: 50px;
-		line-height: 45px;
+		height: 40px;
+		line-height: 40px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
 	.bill-list-item-box-content .address {
+		font-size: 10px;
+		color: #AAAAAA;
 		width: 90%;
 		height: 20px;
 		line-height: 20px;
@@ -231,14 +191,17 @@
 		opacity: 0.75;
 		line-height: 200px;
 		margin: 0;
+		text-align: center;
 	}
 	
 	.el-carousel__item:nth-child(2n) {
 		background-color: #99a9bf;
+		text-align: center;
 	}
 	
 	.el-carousel__item:nth-child(2n+1) {
 		background-color: #d3dce6;
+		text-align: center;
 	}
 	
 	.btn-box {

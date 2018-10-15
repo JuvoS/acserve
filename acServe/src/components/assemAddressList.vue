@@ -4,7 +4,7 @@
 				<ul class="address-list">
 							<li class="list-item" v-show="noAddresss">
 								<div class="item-add" style="font-size: 12px;color: #CCCCCC;">
-									暂无数据
+									暂无地址数据
 								</div>
 							</li>
 							<li class="list-item"  v-for="item in addressList">

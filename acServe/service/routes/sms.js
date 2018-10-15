@@ -4,8 +4,8 @@ var router = express.Router();
 var commonUtil = require('../lib/util.lib');
 const SMSClient = require('@alicloud/sms-sdk')
 
-const accessKeyId = 'LTAISDZdG2HhlySt'
-const secretAccessKey = 'OdBm2SbdiTlaYSIgZGSDpVb04yXmwB'
+const accessKeyId = 'LTAISDZdG2HhlySts'
+const secretAccessKey = 'OdBm2SbdiTlaYSIgZGSDpVb04yXmwBs'
 
 //初始化sms_client
 let smsClient = new SMSClient({accessKeyId, secretAccessKey})

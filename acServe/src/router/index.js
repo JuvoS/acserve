@@ -21,6 +21,7 @@ import addressListPage from '@/components/pageAddressList'
 import billCreatePage from '@/components/pageBillCreate'
 import billListPage from '@/components/pageBillList'
 import billListServe from '@/components/pageBillServe'
+import BillServeFinish from '@/components/pageBillServeFinish'
 import devicePage from '@/components/pageDevice'
 import userPage from '@/components/pageUser'
 import suggestPage from '@/components/pageSuggest'
@@ -75,6 +76,10 @@ export default new Router({
     	path: '/serve/wait',
     	name: 'waitBill',
     	component: billListServe
+    },{
+    	path: '/serve/finish',
+    	name: 'finishBill',
+    	component: BillServeFinish
     },{
     	path: '/device',
     	name: 'device',

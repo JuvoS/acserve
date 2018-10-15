@@ -57,9 +57,8 @@
 			      	<el-input v-model="suggestForm.message" type="textarea"></el-input>
 			    </el-form-item>
 			</el-form>
-	
-				    <el-button @click="resetForm()">取 消</el-button>
-				    <el-button type="primary" @click="editForm()">确 定</el-button>
+			    <el-button @click="resetForm()">取 消</el-button>
+			    <el-button type="primary" @click="editForm()">确 定</el-button>
 		  </el-dialog>
 		  <el-dialog
   title="提示"
@@ -114,7 +113,7 @@
 		        this.loading = true;
 				this.suggestForm.serveCode = sessionStorage.userCode;
 				var dataForm = this.suggestForm;
-				this.$axios.post(this.$localUrl + 'device/del/brand', dataForm, {
+				this.$axios.post(this.$localUrl + 'suggest/del', dataForm, {
 					transformRequest: [function(data) {return JSON.stringify(dataForm);}]
 				}).then((response) => {
 					this.resetForm();

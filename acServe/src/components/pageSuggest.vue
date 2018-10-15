@@ -71,6 +71,7 @@ export default {
   	getsuggestList(){
   		this.$axios.get(this.$localUrl + 'suggest/list?code='+this.userCode).then((response) => {
 				this.suggestList = response.data;
+				console.log(this.suggestList);
 				
 				if(response.data !==null && response.data.length !==0){
 					this.nosuggests = false;
@@ -135,7 +136,9 @@ export default {
 </script>
 
 <style scoped>
-
+.el-header {
+	padding: 0;
+}
 	.suggest-list-panel {
 		width: 100%;
 		min-height: 100%;

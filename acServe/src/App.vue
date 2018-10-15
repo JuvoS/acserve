@@ -57,4 +57,33 @@ html,body {
 .app-panel {
 	margin-top: 3rem;
 }
+
+.el-collapse {
+		background: none;
+		border-top: 0px;
+	}
+	
+	.el-collapse-item {
+		border-radius: 5px;
+		margin: 10px auto;
+		background: #FFFFFF;
+	}
+	
+	.el-collapse-item__header {
+		height: 100px;
+	}
+	
+	.el-collapse-item__arrow {
+		line-height: 30px;
+		font-size: 25px;
+		font-weight: lighter;
+		color: #CCCCCC;
+		margin-top: 35px;
+		margin-right: 10px;
+		width: 6%;
+	}
+	
+	.el-collapse-item__content {
+		padding-bottom: 5px;
+	}
 </style>

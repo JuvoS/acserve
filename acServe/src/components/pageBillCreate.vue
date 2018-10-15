@@ -102,7 +102,7 @@
 			this.$axios.post(this.$localUrl + 'bill/create', dataForm, {
 				transformRequest: [function(data) {return JSON.stringify(dataForm);}]
 			}).then((response) => {
-				this.$router.push('/bill/list/wait');
+				this.$router.push('/bill/list/all');
 			}).catch((err) => {
 				console.log(err);
 			});

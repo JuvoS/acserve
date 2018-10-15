@@ -9,6 +9,7 @@ import assemDeviceList from '@/components/assemDeviceList'
 import assemBrandNav from '@/components/assemBrandNav'
 import billCreatePage from '@/components/pageBillCreate'
 import billListPage from '@/components/pageBillList'
+import billListInfoPage from '@/components/pageBillListInfo'
 import userCreatePage from '@/components/pageUserCreate'
 import userListPage from '@/components/pageUserList'
 import deviceListPage from '@/components/pageDeviceList'
@@ -88,8 +89,12 @@ export default new Router({
     	name: 'billListAll',
     	component: billListPage
     },{
+    	path: '/bill/list/info/:code',
+    	name: 'billListInfo',
+    	component: billListInfoPage
+    },{
     	path: '/device/create',
-    	name: 'billCreate',
+    	name: 'deviceCreate',
     	component: billCreatePage
     },{
     	path: '/device/list/',

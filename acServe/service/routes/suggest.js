@@ -11,14 +11,17 @@ var flagDeal = function(s){
   for(var i=0;i<s.length;i++){
     s[i].isActive = 'dealNoActive';
    
-    switch(s[i].flag){
+    switch(parseInt(s[i].flag)){
       case 1:
-      s[i].flag = '待处理';
+        s[i].flag = '待处理';
+        continue;
       case 2:
-      s[i].flag = '已处理';
-      s[i].isActive = 'dealActive';
+        s[i].flag = '已处理';
+        s[i].isActive = 'dealActive';
+        continue;
       default:
-      s[i].flag = '未处理';
+        s[i].flag = '未处理';
+        break;
     }
   }
 
@@ -68,47 +71,40 @@ router.get('/page/:pageIndex/:pageSizeNum', [commonUtil.jsonHeader], function(re
       "pageSizeNum": req.params.pageSizeNum,
       "count":countNum[0]['count(*)']
     }
-    for(var i=0;i<s.length;i++){
-      s[i].isActive = 'dealNoActive';
-     
-      switch(s[i].flag){
-        case 1:
-        s[i].flag = '待处理';
-        case 2:
-        s[i].flag = '已处理';
-        s[i].isActive = 'dealActive';
-        default:
-        s[i].flag = '未处理';
-      }
-    }
+    data = flagDeal(data);
     data.data = s;
     return res.json(data);
   })();
 
 });
-router.post('/update', [commonUtil.jsonHeader], function(req, res, next) {
+
+router.post('/edit', [commonUtil.jsonHeader], function(req, res, next) {
   (async ()=>{
     var obj = JSON.parse(JSON.stringify(req.body));
     for( var k in obj){
       obj = k;
     }
     obj = JSON.parse(obj);
-
+    
     var data = {
       "code": 200,
-      "messgae": "创建成功!"
+      "message": "修改成功!"
     }
-   
-    obj.updateTime = dateLib.getTimeStamp();
-    console.log(obj);
-    await db.UPDATE('suggest', obj,{
-      addressCode  : obj.addressCode
-    });
+    
+    var createTime = dateLib.getTimeStamp();
+    var updateTime = dateLib.getTimeStamp();
+
+      obj.updateTime = dateLib.getTimeStamp();
+      await db.INSERT('userservelog', { userCode: obj.serveCode,  did: '修改建议'+obj.Id+'为：'+JSON.stringify(obj), createTime: createTime, updateTime:updateTime },'');
+      delete obj.serveCode;
+      console.log(obj);
+      await db.UPDATE('suggest', obj, { Id: obj.Id },'');
+
 
     return res.json(data);
   })();
+  
 });
-
 router.post('/del', [commonUtil.jsonHeader], function(req, res, next) {
   (async ()=>{
     var obj = JSON.parse(JSON.stringify(req.body));
@@ -119,19 +115,21 @@ router.post('/del', [commonUtil.jsonHeader], function(req, res, next) {
     
     var data = {
       "code": 200,
-      "message": "取消成功!",
+      "message": "删除成功!",
       'data': obj
     }
     
     var createTime = dateLib.getTimeStamp();
     var updateTime = dateLib.getTimeStamp();
 
-    await db.INSERT('userservelog', { userCode: obj.serveCode,  did: '删除建议'+obj.Id, createTime: createTime, updateTime:updateTime },'');
-    delete obj.serveCode;
-    await db.DELETE('suggest', { Id: obj.Id },'');
+      await db.INSERT('userservelog', { userCode: obj.serveCode,  did: '删除建议'+obj.Id+'名为：'+obj.name, createTime: createTime, updateTime:updateTime },'');
+      delete obj.serveCode;
+      await db.DELETE('suggest', { Id: obj.Id },'');
+
 
     return res.json(data);
   })();
+  
 });
 
 module.exports = router;

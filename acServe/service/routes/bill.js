@@ -20,12 +20,12 @@ router.post('/create', [commonUtil.jsonHeader], function(req, res, next) {
       "messgae": "发布成功!"
     }
     
-    var demandCode = codeGenerLib.generDemandCode();
+    var demandCode = codeGenerLib.generDemandCode(obj.userCode);
     while(1){
       var flag = await db.FindOne('demand',{'demandCode': demandCode})
       if(commonUtil.isEmpty(flag)) break;
 
-      demandCode = codeGenerLib.generDemandCode();
+      demandCode = codeGenerLib.generDemandCode(obj.userCode);
     }
 
     obj.demandCode = demandCode;

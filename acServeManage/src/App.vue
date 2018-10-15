@@ -33,7 +33,6 @@ export default {
   		if(this.$route.path != '/login' && (this.$route.path!= '/reg')){
 	  		this.$axios.get(this.$localUrl + 'entry/checkToken?token='+sessionStorage.accessToken).then((response) => {
 					var temp = response.data;
-					console.log(temp);
 					if(temp.code != 200){
 						this.$router.push('/login');
 					}

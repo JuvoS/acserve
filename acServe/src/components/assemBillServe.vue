@@ -1,7 +1,7 @@
 <template>
 	<div class="billList">
 
-		<div class="bill-c-panel">
+		<div class="bill-c-panelmm">
 			<div class="bill-panel">
 				<el-collapse accordion>
 					<el-collapse-item v-show="billListFlag">
@@ -37,8 +37,8 @@
 							</div>
 							<div class="btn-box">
 								<el-button v-show="listitem.typeNum==200" type="primary" round class="bill-btn">接单</el-button>
-								<el-button v-show="listitem.typeNum==201" type="primary" round class="bill-btn">完成</el-button>
-								<el-button v-show="listitem.typeNum==201" round class="bill-btn">拒接</el-button>
+								<el-button @click="finishOrder(listitem.demandCode)" v-show="listitem.typeNum==201" type="primary" round class="bill-btn">完成</el-button>
+								<el-button @click="refuseOrder(listitem.demandCode)" v-show="listitem.typeNum==201" round class="bill-btn">拒接</el-button>
 								<el-button v-show="listitem.typeNum==203" type="primary" round class="bill-btn">评价</el-button>
 								
 								<!--<el-button v-show="listitem.typeNum==200" type="primary" round class="bill-btn">修正订单</el-button>
@@ -68,12 +68,41 @@
 		},
 		methods: {
 			getBillList: function(type) {
-				this.$axios.get(this.$localUrl + 'bill/listServe?code=' + sessionStorage.userCode + '&type=' + type).then((response) => {
+				this.$axios.get(this.$localUrl + 'billserve/assignList?code=' + sessionStorage.userCode + '&type=' + type).then((response) => {
 					var temp = response.data;
-					console.log(temp);
 					this.billListFlag = true;
 					if(!this.isOwnEmpty(temp)) this.billListFlag = false;
 					this.billListData = temp;
+				}).catch((err) => {
+					console.log(err);
+				});
+			},
+			finishOrder: function(val){
+				var dataForm = {
+					demandCode: val,
+					serveCode: sessionStorage.userCode
+				};
+				console.log(dataForm);
+				this.$axios.post(this.$localUrl + 'billserve/do/finish', dataForm, {
+					transformRequest: [function(data) {return JSON.stringify(dataForm);}]
+				}).then((response) => {
+					this.$message({ message: response.data.message, type: 'success' });
+					this.$router.go(0);
+				}).catch((err) => {
+					console.log(err);
+				});
+			},
+			refuseOrder: function(val){
+				var dataForm = {
+					demandCode: val,
+					serveCode: sessionStorage.userCode
+				};
+				console.log(dataForm);
+				this.$axios.post(this.$localUrl + 'billserve/do/refuse', dataForm, {
+					transformRequest: [function(data) {return JSON.stringify(dataForm);}]
+				}).then((response) => {
+					this.$message({ message: response.data.message, type: 'success' });
+					this.$router.go(0);
 				}).catch((err) => {
 					console.log(err);
 				});
@@ -94,8 +123,9 @@
 		padding: 0;
 	}
 	
-	.bill-c-panel {
+	.bill-c-panelmm {
 		width: 100%;
+		padding-top: 0.1rem;
 	}
 	
 	.bill-panel {
